@@ -1,10 +1,18 @@
 # Django settings for rebootourschools project.
 
+#IMPORTS
+import djcelery
+try:
+    from settings_dev import *
+except ImportError, exp:
+    pass
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Chris Casey', 'chriscasey1@gmail.com'),
+    ('Dustin Chesterman', 'dustin.chesterman@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -118,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'technologytracker',
     'django.contrib.admin',
+    'djcelery',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -145,8 +154,5 @@ LOGGING = {
     }
 }
 
-try:
-    from settings_dev import *
-except ImportError, exp:
-    pass
-
+#CELERY LOADER
+djcelery.setup_loader()
