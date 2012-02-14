@@ -1,10 +1,15 @@
 # Django settings for rebootourschools project.
 
+#IMPORTS
+from settings_dev import *
+import djcelery
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Chris Casey', 'chriscasey1@gmail.com'),
+    ('Dustin Chesterman', 'dustin.chesterman@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -27,7 +32,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Los_Angeles'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -117,8 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'technologytracker',
     'django.contrib.admin',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'djcelery',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -145,3 +149,6 @@ LOGGING = {
         },
     }
 }
+
+#CELERY LOADER
+djcelery.setup_loader()
