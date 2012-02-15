@@ -1,11 +1,7 @@
 # Django settings for rebootourschools project.
 
 #IMPORTS
-import djcelery
-try:
-    from settings_dev import *
-except ImportError, exp:
-    pass
+#import djcelery
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -106,7 +102,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.messages.middleware.SessionMiddleware',
+#    'django.contrib.messages.middleware.SessionMiddleware',
 )
 
 ROOT_URLCONF = 'rebootourschools.urls'
@@ -126,9 +122,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'technologytracker',
     'django.contrib.admin',
-    'djcelery',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+ #   'djcelery',
+    'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -154,5 +149,10 @@ LOGGING = {
     }
 }
 
+try:
+    from settings_dev import *
+except ImportError, exp:
+    pass
+
 #CELERY LOADER
-djcelery.setup_loader()
+#djcelery.setup_loader()
