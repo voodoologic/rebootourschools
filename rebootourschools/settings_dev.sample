@@ -10,7 +10,18 @@ DATABASES = {
 }
 
 
-# This needs to be specified with full paths soneeds to be in each dev's settings_dev.py
+# This needs to be specified with full paths so needs to be in each dev's settings_dev.py
 TEMPLATE_DIRS = (
     '/home/dchesterman/Documents/PythonDev/RoS/rebootourschools/templates/technologytracker',
+)
+
+# This also needs to be absolute paths.  It is the project wide paths to our static assets directory.
+# With this set, references to static assets can be made as follows :
+#     /static/then/rest/of/path.css
+# The /static/ part of the path is what points to the STATICFILES_DIRS values
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    '/home/dchesterman/Documents/PythonDev/RoS/rebootourschools/assets',
 )
