@@ -1,4 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
+
+
+
+
+
+####
+# District and School related field
+####
 
 class District(models.Model):
     full_name = models.CharField(max_length=60)
@@ -21,7 +30,35 @@ class School(models.Model):
     def computer_count(self):
         return u"%s" % ("num computers")
     computer_count.short_description = "Computers at this school"           
+
+
     
+####
+# User models
+####
+
+class TechTrackerAdminProfile(models.Model):
+    """Super User for global reporting and account creation."""
+
+    # Link to Django user model
+    user = models.OneToOneField(User)
+
+class DistrictUserProfile(models.Model):
+    """District User for each district account."""
+
+    # Link to Django user model
+    user = models.OneToOneField(User)
+
+    district = models.ForeignKey(District)
+
+    def __unicode__(self):
+        return u"%s/%s" % (self.user.username, self.district.full_name)
+
+
+
+####
+# Device models
+####
 
 class Computer(models.Model):
     school = models.ForeignKey(School)
