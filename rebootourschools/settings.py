@@ -102,7 +102,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-#    'django.contrib.messages.middleware.SessionMiddleware',
 )
 
 ROOT_URLCONF = 'rebootourschools.urls'
