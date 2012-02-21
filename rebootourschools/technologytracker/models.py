@@ -60,8 +60,12 @@ class DistrictUserProfile(models.Model):
 # Device models
 ####
 
-class Computer(models.Model):
+
+class DistrictAsset(models.Model):
+    district = models.ForeignKey(District)
     school = models.ForeignKey(School)
+
+class Computer(DistrictAsset):
     os = models.CharField(max_length=30)
     processor = models.CharField(max_length=30)
     hd_size = models.CharField(max_length=10)
@@ -75,8 +79,7 @@ class Computer(models.Model):
         return u"%s %s %s %s" % (self.os, self.processor, self.ram, self.hd_size)
 
     
-class LicensedSoftware(models.Model):
-    school =  models.ForeignKey(School)
+class LicensedSoftware(DistrictAsset):
     product_name = models.CharField(max_length=30)
     software_type = models.CharField(max_length=30)
     publisher = models.CharField(max_length=30)
@@ -85,8 +88,7 @@ class LicensedSoftware(models.Model):
         return u"%s %s" % (self.product_name, self.publisher)
 
 
-class Printer(models.Model):
-    school =  models.ForeignKey(School)
+class Printer(DistrictAsset):
     model = models.CharField(max_length=30)
     manufacturer = models.CharField(max_length=30)
     kind = models.CharField(max_length=30)
@@ -95,8 +97,7 @@ class Printer(models.Model):
         return u"%s %s" % (self.manufacturer, self.model)      
 
 
-class Tablet(models.Model):
-    school =  models.ForeignKey(School)
+class Tablet(DistrictAsset):
     model = models.CharField(max_length=30)
     manufacturer = models.CharField(max_length=30)
     kind = models.CharField(max_length=30)
@@ -105,15 +106,11 @@ class Tablet(models.Model):
         return u"%s %s" % (self.manufacturer, self.model)
 
     
-class MobileDevice(models.Model):
-    school =  models.ForeignKey(School)
+class MobileDevice(DistrictAsset):
     model = models.CharField(max_length=30)
     manufacturer = models.CharField(max_length=30)
     kind = models.CharField(max_length=30)
     
     def __unicode__(self):
         return u"%s %s" % (self.manufacturer, self.model)
-    
-    
-    
     
