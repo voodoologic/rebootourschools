@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.forms import ModelForm
 
 
 
@@ -17,7 +18,8 @@ class District(models.Model):
     county = models.CharField(max_length=30)
     
     def __unicode__(self):
-        return self.district_code
+        return self.district_code        
+        
 
 class School(models.Model):
     district = models.ForeignKey(District)
@@ -113,4 +115,20 @@ class MobileDevice(DistrictAsset):
     
     def __unicode__(self):
         return u"%s %s" % (self.manufacturer, self.model)
+        
+        
+####
+# Forms
+####        
+class DistrictForm(ModelForm):
+    class Meta:
+        model = District
+        
+class SchoolForm(ModelForm):
+    class Meta:
+        model = School
+        
+class ComputerForm(ModelForm):
+    class Meta:
+        model = Computer                                
     

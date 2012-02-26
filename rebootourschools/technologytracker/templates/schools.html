@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Schools:</h2>
+{% for school in schools %}
+    <li>
+		<a href="/techtracker/districtDetail/">{{ school.full_name }} ({{ school.city }},{{ school.full_name}} )</a>
+	</li>
+{% endfor %}
+{% endblock %}
