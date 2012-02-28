@@ -2,7 +2,8 @@
 
 #IMPORTS
 import os
-#import djcelery
+import djcelery
+from datetime import timedelta
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -115,6 +116,28 @@ TEMPLATE_DIRS = (
    os.getcwd() + '/templates',
 )
 
+
+# CELERY STUFF
+djcelery.setup_loader()
+BROKER_URL = "django://"
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+BROKER_VHOST = "/"
+CELERYD_CONCURRENCY = "1"
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+
+CELERYBEAT_SCHEDULE = {
+    "runs-every-30-seconds": {
+        "task": "technologytrackerapi.tasks.add",
+        "schedule": timedelta(seconds=5),
+        "args": (16, 16)
+    },
+}
+
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,9 +146,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'technologytracker',
+    'technologytrackerapi',
     'django.contrib.admin',
- #   'djcelery',
+    'djcelery',
     'django.contrib.admindocs',
+    'kombu.transport.django',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,6 +180,3 @@ try:
     from settings_dev import *
 except ImportError, exp:
     pass
-
-#CELERY LOADER
-#djcelery.setup_loader()
