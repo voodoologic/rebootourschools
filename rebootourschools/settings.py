@@ -119,21 +119,27 @@ TEMPLATE_DIRS = (
 
 # CELERY STUFF
 djcelery.setup_loader()
+
+BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
 BROKER_URL = "django://"
 BROKER_HOST = "localhost"
 BROKER_PORT = 5672
 BROKER_USER = "guest"
 BROKER_PASSWORD = "guest"
 BROKER_VHOST = "/"
+
+CELERY_DISABLE_RATE_LIMITS = True
+CELERY_RESULT_BACKEND = "djcelery.backends.database.DatabaseBackend"
+
 CELERYD_CONCURRENCY = "1"
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 
 
 CELERYBEAT_SCHEDULE = {
     "runs-every-30-seconds": {
-        "task": "technologytrackerapi.tasks.add",
+        "task": "technologytrackerapi.tasks.createRecord",
         "schedule": timedelta(seconds=5),
-        "args": (16, 16)
+        #"args": (16, 16)
     },
 }
 
