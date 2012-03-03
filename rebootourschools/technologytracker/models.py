@@ -3,9 +3,6 @@ from django.db import models
 from django.forms import ModelForm
 
 
-
-
-
 ####
 # District and School related field
 ####
@@ -55,7 +52,6 @@ class DistrictUserProfile(models.Model):
 
     def __unicode__(self):
         return u"%s/%s" % (self.user.username, self.district.full_name)
-
 
 
 ####

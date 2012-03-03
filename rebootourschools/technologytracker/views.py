@@ -7,19 +7,26 @@ from django.shortcuts import render_to_response
 from technologytracker.models import *
 # Create your views here.
 
-@login_required(login_url='/techtracker/login/')
-# @user_passes_test(lambda u: isinstance(u, DistrictUserProfile), login_url='/techtracker/login/')
-def districtDetail(request):
-    userDistrict = District.objects.get(pk=1)
-    return render_to_response('districtDetail.html', {'userDistrict': userDistrict})
+@login_required(login_url='/login/')
+def home(request):
+    
+    ###retrieve the district that the current user is assigned to
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
+    
+    ###retrieve all of the schools in the user's district
+    schools = School.objects.filter(district=userDistrict)
+    
+    
+    return render_to_response('home.html', {'userDistrict': userDistrict, 'schools': schools})
 
-@login_required(login_url='/techtracker/login/')
+@login_required(login_url='/login/')
 def districtReporting(request):
     userDistrict = District.objects.get(pk=1)
     districtAssets = userDistrict.districtasset_set
     return render_to_response('districtReporting.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets})
     
-@login_required(login_url='/techtracker/login/')
+@login_required(login_url='/login/')
 def districts(request):
     userDistrict = District.objects.get(pk=1)
     districtAssets = userDistrict.districtasset_set
@@ -29,7 +36,7 @@ def districts(request):
     
     return render_to_response('districts.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'districts': districts})     
     
-@login_required(login_url='/techtracker/login/')
+@login_required(login_url='/login/')
 def schools(request):
     userDistrict = District.objects.get(pk=1)
     districtAssets = userDistrict.districtasset_set
@@ -39,7 +46,7 @@ def schools(request):
 
     return render_to_response('schools.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'schools': schools})       
     
-@login_required(login_url='/techtracker/login/')
+@login_required(login_url='/login/')
 def addDistrict(request):
     userDistrict = District.objects.get(pk=1)
     districtAssets = userDistrict.districtasset_set
@@ -50,7 +57,7 @@ def addDistrict(request):
             # Process the data in form.cleaned_data
             form.save()
             
-            return HttpResponseRedirect('/techtracker/addDistrict/') # Redirect after POST
+            return HttpResponseRedirect('/addDistrict/') # Redirect after POST
     else:
         form = DistrictForm() # An unbound form                
     
@@ -60,7 +67,7 @@ def addDistrict(request):
         'form': form},
          context_instance=RequestContext(request))  
     
-@login_required(login_url='/techtracker/login/')
+@login_required(login_url='/login/')
 def addSchool(request):
     userDistrict = District.objects.get(pk=1)
     districtAssets = userDistrict.districtasset_set
@@ -70,7 +77,7 @@ def addSchool(request):
         if form.is_valid():
             form.save()
             
-            return HttpResponseRedirect('/techtracker/addSchool/') # Redirect after POST
+            return HttpResponseRedirect('/addSchool/') # Redirect after POST
     else:
         form = SchoolForm() # An unbound form                
 

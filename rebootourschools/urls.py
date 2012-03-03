@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from technologytracker.views import *
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -9,6 +8,14 @@ urlpatterns = patterns('',
     # url(r'^$', 'rebootourschools.views.home', name='home'),
     url(r'^techtracker/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^techtracker/', include('technologytracker.urls')),
+    
+    (r'^$', home),
+    (r'^home/$', home),
+    (r'^districtReporting/$', districtReporting),
+    (r'^addDistrict/$', addDistrict),
+    (r'^addSchool/$', addSchool),
+    (r'^districts/$', districts),
+    (r'^schools/$', schools),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
