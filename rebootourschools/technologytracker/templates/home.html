@@ -10,7 +10,7 @@
 <h2>{{ userDistrict.district_code }} Schools:</h2>
 {% for school in schools %}
     <li>
-		<a href="/home/">{{ school.full_name }} ({{ school.city }},{{ school.full_name}} )</a>
+		<a href="/school/{{ school.id}} ">{{ school.full_name }} ( {{ school.school_code }} )</a>
 	</li>
 {% endfor %}
 

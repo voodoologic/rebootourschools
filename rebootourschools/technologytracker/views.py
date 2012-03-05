@@ -1,8 +1,10 @@
 from django.http import HttpResponse
+from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+
 
 from technologytracker.models import *
 # Create your views here.
@@ -10,15 +12,38 @@ from technologytracker.models import *
 @login_required(login_url='/login/')
 def home(request):
     
-    ###retrieve the district that the current user is assigned to
-    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
-    userDistrict = District.objects.get(pk=districtUserProfile)
+    try:
+        ###retrieve the district that the current user is assigned to
+        districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+        userDistrict = District.objects.get(pk=districtUserProfile)
+        
+        ###retrieve all of the schools in the user's district
+        schools = School.objects.filter(district=userDistrict)
+         
+        return render_to_response('home.html', {'userDistrict': userDistrict, 'schools': schools})
     
-    ###retrieve all of the schools in the user's district
-    schools = School.objects.filter(district=userDistrict)
-    
-    
-    return render_to_response('home.html', {'userDistrict': userDistrict, 'schools': schools})
+    ###exceptions
+    except DistrictUserProfile.DoesNotExist:
+        return HttpResponseNotFound('District profile not found')
+    except District.DoesNotExist:
+        return HttpResponseNotFound('District not found')
+    except School.DoesNotExist:        
+        return HttpResponseNotFound('School not found')     
+
+
+@login_required(login_url='/login/')    
+def schoolDetail(request, school_id):
+     
+     try:
+         school = School.objects.get(pk=school_id)
+         return render_to_response('schoolDetail.html', {'school':school})
+     
+     except School.DoesNotExist:        
+         return HttpResponseNotFound('School not found')
+     
+        
+
+
 
 @login_required(login_url='/login/')
 def districtReporting(request):
@@ -86,6 +111,22 @@ def addSchool(request):
         'districtAssets': districtAssets, 
         'form': form},  
         context_instance=RequestContext(request)) 
+        
+@login_required(login_url='/login/')
+def addComputer(request):
+
+    if request.method == 'POST':
+        form = ComputerForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/addComputer/') # Redirect after POST
+    else:
+        form = ComputerForm() # An unbound form                
+
+    return render_to_response('addComputer.html', { 
+        'form': form},  
+        context_instance=RequestContext(request))        
      
       
 

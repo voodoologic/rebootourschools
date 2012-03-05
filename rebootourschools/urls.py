@@ -6,7 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'rebootourschools.views.home', name='home'),
-    url(r'^techtracker/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^techtracker/', include('technologytracker.urls')),
     
     (r'^$', home),
@@ -14,8 +14,12 @@ urlpatterns = patterns('',
     (r'^districtReporting/$', districtReporting),
     (r'^addDistrict/$', addDistrict),
     (r'^addSchool/$', addSchool),
+    (r'^addComputer/$', addComputer),
     (r'^districts/$', districts),
     (r'^schools/$', schools),
+    
+    url(r'^school/(?P<school_id>\d+)/$', 'technologytracker.views.schoolDetail'),
+    
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
