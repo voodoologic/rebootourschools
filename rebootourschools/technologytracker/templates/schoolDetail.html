@@ -2,7 +2,43 @@
 
 {% block content %}
 <h2>{{ school }}</h2>
+<h3>Total Computers: {{ computerCount }}</h3>
+<h4>{{ osxCount }} Mac | {{ linuxCount }} Linux | {{ windowsCount }} Windows</h4>
 <hr/>
+<button class="btn-primary" data-toggle="button">Add a Computer</button><br/><br/>
 
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>OS</th>
+			<th>Processor</th>
+			<th>HD Size</th>
+			<th>RAM</th>
+			<th>Monitor Size</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for computer in computers %}
+    <tr>
+		<td>{{ computer.os }}</td>
+		<td>{{ computer.processor }}</td>
+		<td>{{ computer.hd_size }}</td>
+		<td>{{ computer.ram }}</td>
+		<td>{{ computer.monitor_size }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
 
 {% endblock %}
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  
+	$('.tabs').button()
+	
+	
+
+});
+</script>

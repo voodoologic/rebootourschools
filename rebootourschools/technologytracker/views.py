@@ -19,8 +19,19 @@ def home(request):
         
         ###retrieve all of the schools in the user's district
         schools = School.objects.filter(district=userDistrict)
+        schoolCount = School.objects.filter(district=userDistrict).count()
+        
+        
+        if request.method == 'POST':
+            form = SchoolForm(request.POST)
+            if form.is_valid():
+                form.save()
+
+                return HttpResponseRedirect('/addSchool/') # Redirect after POST
+        else:
+            form = SchoolForm() # An unbound form
          
-        return render_to_response('home.html', {'userDistrict': userDistrict, 'schools': schools})
+        return render_to_response('home.html', {'userDistrict': userDistrict, 'schools': schools, 'schoolCount':schoolCount, 'form':form})
     
     ###exceptions
     except DistrictUserProfile.DoesNotExist:
@@ -36,7 +47,17 @@ def schoolDetail(request, school_id):
      
      try:
          school = School.objects.get(pk=school_id)
-         return render_to_response('schoolDetail.html', {'school':school})
+         computers = Computer.objects.filter(school=school).order_by('os', 'ram')
+         computerCount = Computer.objects.filter(school=school).count()
+         osxCount = Computer.objects.filter(school=school, os='OSX').count()
+         linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
+         windowsCount = Computer.objects.filter(school=school, os='WINDOWS').count()
+         return render_to_response('schoolDetail.html', {'school':school, 
+            'computers':computers, 
+            'computerCount':computerCount,
+            'osxCount':osxCount,
+            'linuxCount':linuxCount,
+            'windowsCount':windowsCount})
      
      except School.DoesNotExist:        
          return HttpResponseNotFound('School not found')
@@ -47,13 +68,15 @@ def schoolDetail(request, school_id):
 
 @login_required(login_url='/login/')
 def districtReporting(request):
-    userDistrict = District.objects.get(pk=1)
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
     return render_to_response('districtReporting.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets})
     
 @login_required(login_url='/login/')
 def districts(request):
-    userDistrict = District.objects.get(pk=1)
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
     
     ##get a list of all the districts
@@ -63,7 +86,8 @@ def districts(request):
     
 @login_required(login_url='/login/')
 def schools(request):
-    userDistrict = District.objects.get(pk=1)
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
 
     ##get a list of all the districts
@@ -73,7 +97,8 @@ def schools(request):
     
 @login_required(login_url='/login/')
 def addDistrict(request):
-    userDistrict = District.objects.get(pk=1)
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
     
     if request.method == 'POST': # If the form has been submitted...
@@ -94,7 +119,8 @@ def addDistrict(request):
     
 @login_required(login_url='/login/')
 def addSchool(request):
-    userDistrict = District.objects.get(pk=1)
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
 
     if request.method == 'POST':

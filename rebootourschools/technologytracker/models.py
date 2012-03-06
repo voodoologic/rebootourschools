@@ -2,6 +2,46 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.forms import ModelForm
 
+####
+# Choices
+####    
+
+OS_CHOICES = (
+    ('OSX', 'OS X'),
+    ('LINUX', 'Linux'),
+    ('WINDOWS', 'Windows'),
+)
+
+HD_SIZE_CHOICES = (
+    ('60', '60 GB'),
+    ('128', '128 GB'),
+    ('250', '250 GB'),
+)
+
+RAM_SIZE_CHOICES = (
+    ('1', '1 GB'),
+    ('2', '2 GB'),
+    ('4', '4 GB'),
+    ('8', '8 GB'),
+)
+
+MONITOR_SIZE_CHOICES = (
+    ('12', '12"'),
+    ('13', '13"'),
+    ('14', '14"'),
+    ('15', '15"'),
+    ('16', '16"'),
+    ('17', '17"'),
+    ('18', '18"'),
+    ('19', '19"'),
+    ('20', '20"'),
+    ('21', '21"'),
+    ('22', '22"'),
+    ('23', '23"'),
+    ('24', '24"'),
+)
+
+
 
 ####
 # District and School related field
@@ -64,11 +104,11 @@ class DistrictAsset(models.Model):
     school = models.ForeignKey(School)
 
 class Computer(DistrictAsset):
-    os = models.CharField(max_length=30)
+    os = models.CharField(max_length=30, choices=OS_CHOICES)
     processor = models.CharField(max_length=30)
-    hd_size = models.CharField(max_length=10)
-    ram = models.CharField(max_length=30)
-    monitor_size = models.CharField(max_length=30)
+    hd_size = models.CharField(max_length=10, choices=HD_SIZE_CHOICES)
+    ram = models.CharField(max_length=30, choices=RAM_SIZE_CHOICES)
+    monitor_size = models.CharField(max_length=30, choices=MONITOR_SIZE_CHOICES)
     
     class Meta:
         ordering = ('school',)
@@ -126,5 +166,15 @@ class SchoolForm(ModelForm):
         
 class ComputerForm(ModelForm):
     class Meta:
-        model = Computer                                
+        model = Computer 
+        
+
+
+    
+    
+    
+    
+    
+    
+                                       
     
