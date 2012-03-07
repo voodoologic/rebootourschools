@@ -5,8 +5,11 @@
 <h1>{% block title %}{{ userDistrict.full_name }} ({{ userDistrict.district_code }}){% endblock %}</h1>
 
 <h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3><br/>
+<h4>{{ schoolCount }} schools in this district
 
 <hr/>
+<button data-controls-modal="#addSchool" data-target="#addSchool" data-backdrop="true" data-keyboard="true" class="btn-primary">Add a School</button><br/><br/>
+
 <h2>{{ userDistrict.district_code }} Schools:</h2>
 {% for school in schools %}
     <li>
@@ -14,5 +17,33 @@
 	</li>
 {% endfor %}
 
+
+<div class="modal hide fade" id="addSchool">
+	<div class="modal-header">
+		<a href="#" class="close">&times;</a>
+		<h2>Add a new School:</h2>
+	</div>
+	<div class="modal-body">
+		<form action="/addSchool/" method="post">{% csrf_token %}
+		{{ form.as_p }}
+	</div>
+	<div class="modal-footer">
+		<input type="submit" value="Add" />
+	</form>
+</div>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.tabs').button()
+
+  $('#addSchool').modal(options)
+
+});
+</script>
+
 {% endblock %}
+
+
 
