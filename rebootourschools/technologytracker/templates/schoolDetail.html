@@ -5,7 +5,7 @@
 <h3>Total Computers: {{ computerCount }}</h3>
 <h4>{{ osxCount }} Mac | {{ linuxCount }} Linux | {{ windowsCount }} Windows</h4>
 <hr/>
-<button class="btn-primary" data-toggle="button">Add a Computer</button><br/><br/>
+<button class="btn-primary" id="addComputer">Add a Computer</button><br/><br/>
 
 <table class="table table-bordered table-striped">
 	<thead>
@@ -30,15 +30,30 @@
 	</tbody>
 </table>
 
-{% endblock %}
-
+<div class="modal hide fade" id="addComputerForm">
+	<div class="modal-header">
+		<a href="#" id="close" class="close">&times;</a>
+		<h2>Add a new Computer:</h2>
+	</div>
+	<div class="modal-body">
+		<form action="/addComputer/" method="post">{% csrf_token %}
+		{{ form.as_p }}
+	</div>
+	<div class="modal-footer">
+		<input type="submit" value="Add" />
+	</form>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function(){
-  
-	$('.tabs').button()
 	
-	
+	$("#addComputer").click(function() {
+		$('#addComputerForm').modal('show');
+	});
 
 });
 </script>
+
+{% endblock %}
+
+

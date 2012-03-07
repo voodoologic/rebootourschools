@@ -52,18 +52,27 @@ def schoolDetail(request, school_id):
          osxCount = Computer.objects.filter(school=school, os='OSX').count()
          linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
          windowsCount = Computer.objects.filter(school=school, os='WINDOWS').count()
+         
+         if request.method == 'POST':
+             form = ComputerForm(request.POST)
+             if form.is_valid():
+                 form.save()
+
+                 return HttpResponseRedirect('/addComputer/') # Redirect after POST
+         else:
+             form = ComputerForm() # An unbound form
+         
+         
          return render_to_response('schoolDetail.html', {'school':school, 
             'computers':computers, 
             'computerCount':computerCount,
             'osxCount':osxCount,
             'linuxCount':linuxCount,
-            'windowsCount':windowsCount})
+            'windowsCount':windowsCount,
+            'form':form})
      
      except School.DoesNotExist:        
          return HttpResponseNotFound('School not found')
-     
-        
-
 
 
 @login_required(login_url='/login/')
