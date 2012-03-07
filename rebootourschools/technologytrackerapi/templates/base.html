@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <title>{% block title %}Technology Tracker{% endblock %}</title>
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/technologytracker/css/techtracker.css" />
+</head>
+<body>
+  <header>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Technology Tracker</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li>
+                <a href="/districtReporting/">District Reporting</a>
+              </li>
+			  <li>
+                <a href="/districts/">District List</a>
+              </li>
+			  <li>
+                <a href="/schools/">School List</a>
+              </li>
+			  <li>
+                <a href="/addDistrict/">Add a District</a>
+              </li>
+			  <li>
+                <a href="/addSchool/">Add a School</a>
+              </li>
+			  <li>
+                <a href="/addComputer/">Add a Computer</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block header %}{% endblock %}
+  </header>
+  <div id="content" class="container">
+    {% block content %}{% endblock %}
+  </div>
+  <footer>
+    {% block footer %}{% endblock %}
+  </footer>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+  </script>
+</body>
+</html>

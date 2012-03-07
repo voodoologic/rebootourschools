@@ -135,13 +135,13 @@ CELERYD_CONCURRENCY = "1"
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 
 
-CELERYBEAT_SCHEDULE = {
-    "runs-every-30-seconds": {
-        "task": "technologytrackerapi.tasks.createRecord",
-        "schedule": timedelta(seconds=5),
+#CELERYBEAT_SCHEDULE = {
+#    "runs-every-30-seconds": {
+#        "task": "technologytrackerapi.tasks.createRecord",
+#        "schedule": timedelta(seconds=5),
         #"args": (16, 16)
-    },
-}
+#    },
+#}
 
 
 INSTALLED_APPS = (
