@@ -6,5 +6,7 @@ body {
     padding-top: 90px;
 }
 
-
+body.no-user-base {
+    text-align: center;
+}
 

@@ -9,6 +9,10 @@ from django.shortcuts import render_to_response
 from technologytracker.models import *
 # Create your views here.
 
+def splash(request):
+    return render_to_response('splash.html')
+
+
 @login_required(login_url='/login/')
 def home(request):
     

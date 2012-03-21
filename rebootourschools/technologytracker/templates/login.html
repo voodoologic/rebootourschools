@@ -1,13 +1,14 @@
-{% extends "base.html" %}
-{% load url from future %}
-
+{% extends "noUserBase.html" %}
+  
 {% block content %}
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<div class="hero-unit">
+
+<form method="post" action="{% url django.contrib.auth.views.login %}">
 {% csrf_token %}
 <table>
 <tr>
@@ -20,8 +21,10 @@
 </tr>
 </table>
 
-<input type="submit" value="login" />
+<input class="btn btn-large" type="submit" value="Login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+
+</div>
 
 {% endblock %}

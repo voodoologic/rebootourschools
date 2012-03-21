@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     url(r'^techtracker/', include('technologytracker.urls')),
     url(r'^techtrackerapi/', include('technologytrackerapi.urls')),
     
-    (r'^$', home),
+    (r'^$', splash),
     (r'^home/$', home),
     (r'^districtReporting/$', districtReporting),
     (r'^addDistrict/$', addDistrict),
