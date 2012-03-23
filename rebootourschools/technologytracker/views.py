@@ -25,7 +25,6 @@ def home(request):
         schools = School.objects.filter(district=userDistrict)
         schoolCount = School.objects.filter(district=userDistrict).count()
         
-        
         return render_to_response('home.html',
                                   {'userDistrict': userDistrict, 'schools': schools, 'schoolCount':schoolCount},
                                   context_instance=RequestContext(request))

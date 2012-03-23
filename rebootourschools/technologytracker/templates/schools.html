@@ -2,9 +2,56 @@
 
 {% block content %}
 <h2>Schools:</h2>
-{% for school in schools %}
+
+<ul>
+  {% for school in schools %}
     <li>
-		<a href="/home/">{{ school.full_name }} ({{ school.city }},{{ school.full_name}} )</a>
-	</li>
-{% endfor %}
+      <a href="/school/{{ school.id }}/">{{ school.full_name }} ({{ school.city }},{{ school.full_name}} )</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<br/>
+<br/>
+
+<a id="addSchool" class="btn-primary btn-large" data-toggle="modal" data-target="#addSchoolModal" href="/addSchool/">Add a School</a>
+
+<div class="modal hide" id="addSchoolModal">
+  <div class="modal-header">
+    <a href="#" class="close" id="closeModal" data-dismiss="modal">&times;</a>
+    <h2>Add a new School:</h2>
+  </div>
+  <div class="modal-body">
+    <form action="/addSchool/" id="addSchoolForm" method="post">
+      {% csrf_token %}
+      <label for="schoolName">Full Name:</label><br/>
+      <input type="text" name="schoolName" id="schoolName" /><br/>
+      <br/>
+      <label for="schoolCode">School Code:</label><br/>
+      <input type="text" name="schoolCode" id="schoolCode" /><br/>
+      <br/>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <input type="button" class="btn" id="closeButton" value="Cancel" />
+    <input type="button" class="btn btn-primary" id="addButton" value="Add" />
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready( function(){
+        
+    $("#closeButton").click(function() {
+      $('#addSchoolModal').modal('hide');
+    });
+
+    $("#addButton").click( function() {
+      $("#addSchoolForm").submit();
+    });
+
+  });
+</script>
+
+
 {% endblock %}

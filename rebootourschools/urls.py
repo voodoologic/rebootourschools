@@ -4,8 +4,6 @@ from technologytracker.views import *
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'rebootourschools.views.home', name='home'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^techtracker/', include('technologytracker.urls')),
     url(r'^techtrackerapi/', include('technologytrackerapi.urls')),
