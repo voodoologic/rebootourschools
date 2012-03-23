@@ -26,16 +26,9 @@ def home(request):
         schoolCount = School.objects.filter(district=userDistrict).count()
         
         
-        if request.method == 'POST':
-            form = SchoolForm(request.POST)
-            if form.is_valid():
-                form.save()
-
-                return HttpResponseRedirect('/addSchool/') # Redirect after POST
-        else:
-            form = SchoolForm() # An unbound form
-         
-        return render_to_response('home.html', {'userDistrict': userDistrict, 'schools': schools, 'schoolCount':schoolCount, 'form':form})
+        return render_to_response('home.html',
+                                  {'userDistrict': userDistrict, 'schools': schools, 'schoolCount':schoolCount},
+                                  context_instance=RequestContext(request))
     
     ###exceptions
     except DistrictUserProfile.DoesNotExist:
@@ -85,7 +78,8 @@ def districtReporting(request):
     userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
     return render_to_response('districtReporting.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets})
-    
+
+
 @login_required(login_url='/login/')
 def districts(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
@@ -96,7 +90,8 @@ def districts(request):
     districts = District.objects.all()
     
     return render_to_response('districts.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'districts': districts})     
-    
+
+
 @login_required(login_url='/login/')
 def schools(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
@@ -107,7 +102,8 @@ def schools(request):
     schools = School.objects.all()
 
     return render_to_response('schools.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'schools': schools})       
-    
+
+
 @login_required(login_url='/login/')
 def addDistrict(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
@@ -129,7 +125,8 @@ def addDistrict(request):
         'districtAssets': districtAssets, 
         'form': form},
          context_instance=RequestContext(request))  
-    
+
+
 @login_required(login_url='/login/')
 def addSchool(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
@@ -137,11 +134,11 @@ def addSchool(request):
     districtAssets = userDistrict.districtasset_set
 
     if request.method == 'POST':
-        form = SchoolForm(request.POST)
-        if form.is_valid():
-            form.save()
-            
-            return HttpResponseRedirect('/addSchool/') # Redirect after POST
+        school=School(district=userDistrict,
+                      full_name=request.POST['schoolName'],
+                      school_code=request.POST['schoolCode'])
+        school.save()
+        return HttpResponseRedirect('/schools/') # Redirect after POST
     else:
         form = SchoolForm() # An unbound form                
 
@@ -150,7 +147,8 @@ def addSchool(request):
         'districtAssets': districtAssets, 
         'form': form},  
         context_instance=RequestContext(request)) 
-        
+
+
 @login_required(login_url='/login/')
 def addComputer(request):
 
@@ -166,6 +164,6 @@ def addComputer(request):
     return render_to_response('addComputer.html', { 
         'form': form},  
         context_instance=RequestContext(request))        
-     
-      
+
+
 
