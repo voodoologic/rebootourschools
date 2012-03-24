@@ -49,23 +49,17 @@ def schoolDetail(request, school_id):
          linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
          windowsCount = Computer.objects.filter(school=school, os='WINDOWS').count()
          
-         if request.method == 'POST':
-             form = ComputerForm(request.POST)
-             if form.is_valid():
-                 form.save()
-
-                 return HttpResponseRedirect('/addComputer/') # Redirect after POST
-         else:
-             form = ComputerForm() # An unbound form
-         
-         
-         return render_to_response('schoolDetail.html', {'school':school, 
-            'computers':computers, 
-            'computerCount':computerCount,
-            'osxCount':osxCount,
-            'linuxCount':linuxCount,
-            'windowsCount':windowsCount,
-            'form':form})
+         return render_to_response('schoolDetail.html',
+                                   {'school':school,
+                                    'computers':computers,
+                                    'computerCount':computerCount,
+                                    'osxCount':osxCount,
+                                    'linuxCount':linuxCount,
+                                    'windowsCount':windowsCount,
+                                    'hdChoices':HD_SIZE_CHOICES,
+                                    'ramChoices':RAM_SIZE_CHOICES,
+                                    'osChoices':OS_CHOICES, },
+                                    context_instance=RequestContext(request))
      
      except School.DoesNotExist:        
          return HttpResponseNotFound('School not found')
@@ -150,13 +144,20 @@ def addSchool(request):
 
 @login_required(login_url='/login/')
 def addComputer(request):
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
 
     if request.method == 'POST':
-        form = ComputerForm(request.POST)
-        if form.is_valid():
-            form.save()
+        for i in range(int(request.POST['numberOfComputers']) - 1):
+            computer=Computer(district=userDistrict,
+                              school=School.objects.get(pk=request.POST['schoolId']),
+                              os=request.POST['computerOS'],
+                              processor=request.POST['computerProcessor'],
+                              hd_size=request.POST['hdSize'],
+                              ram=request.POST['ram'],)
+            computer.save()
 
-            return HttpResponseRedirect('/addComputer/') # Redirect after POST
+        return HttpResponseRedirect('/school/' + request.POST['schoolId'] + '/') # Redirect after POST
     else:
         form = ComputerForm() # An unbound form                
 
