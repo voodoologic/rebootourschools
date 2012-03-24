@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 <h2>{{ school }}</h2>
 <h3>Total Computers: {{ computerCount }}</h3>
@@ -29,6 +30,10 @@
 	{% endfor %}
 	</tbody>
 </table>
+
+<img src="{{ osChart }}">
+<img src="{{ hdChart }}">
+<img src="{{ ramChart }}">
 
 <div class="modal hide fade" id="addComputerForm">
 	<div class="modal-header">

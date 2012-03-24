@@ -39,7 +39,7 @@ class SchoolAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'school_code', 'district')
     list_filter = ['district',]
     search_fields = ['full_name', 'school_code']
-#    inlines = [ComputersInline, TabletsInline]
+    inlines = [ComputersInline]
     
 class DistrictAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -48,7 +48,7 @@ class DistrictAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'district_code', 'city', 'state', 'county')
     list_filter = ['district_code']
     search_fields = ['full_name', 'district_code', 'city', 'state', 'county']
-    inlines = [SchoolsInline]
+    inlines = [SchoolsInline]       
 
 
 admin.site.register(School, SchoolAdmin)

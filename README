@@ -1,1 +1,5 @@
 #READ ME FOR REBOOT OUR SCHOOLS
+
+INSTALLS:
+pip install django_chartit
+sudo easy_install -U GChartWrapper

@@ -1,7 +1,20 @@
 {% extends "base.html" %}
 
+<head>
+    {% load chartit %}
+    {{ sampleChart|load_charts:"container" }}
+</head>
+
+
+
 {% block content %}
-User : {{ user.username }}<br />
-District : {{ userDistrict.full_name }}<br />
-District Assets : {{ districtAssets.count }}<br />
+
+<h1>{% block title %}{{ userDistrict.full_name }} ({{ userDistrict.district_code }}){% endblock %}</h1>
+<h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3><br/>
+<h4>{{ schoolCount }} schools in this district
+<hr/>
+
+<div id='container'></div>
+
+
 {% endblock %}
