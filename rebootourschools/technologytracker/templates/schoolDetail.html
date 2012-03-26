@@ -18,6 +18,7 @@
       <th>HD Size</th>
       <th>RAM</th>
       <th>Monitor Size</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -28,6 +29,11 @@
       <td>{{ computer.hd_size }}</td>
       <td>{{ computer.ram }}</td>
       <td>{{ computer.monitor_size }}</td>
+      <td>
+        <a name="editComputer{{ computer.pk }}" id="editComputer{{ computer.pk }}" class="btn btn-info btn-mini"
+            data-toggle="modal" data-target="#addComputerModal" href="/updateComputer/{{ computer.pk }}/">Edit</a>
+        <a name="deleteComputer{{ computer.pk }}" id="deleteComputer{{ computer.pk }}" class="btn btn-danger btn-mini" href="/deleteComputer/{{ computer.pk }}/">Delete</a>
+      </td>
     </tr>
   {% endfor %}
   </tbody>
@@ -36,7 +42,7 @@
 <br/>
 <br/>
 
-<a id="addComputer" class="btn-primary btn-large" data-toggle="modal" data-target="#addComputerModal" href="/addComputer/">Add Computers</a>
+<a name="addComputer" id="addComputer" class="btn-primary btn-large" data-toggle="modal" data-target="#addComputerModal" href="/addComputer/">Add Computers</a>
 
 <div class="modal hide" id="addComputerModal">
   <div class="modal-header">
@@ -99,6 +105,10 @@
       $("#addComputerForm").submit();
     });
 
+    $("a[name^='editComputer']").click( function(e) {
+      e.preventDefault();
+      console.log($(this));
+    });
   });
 </script>
 
