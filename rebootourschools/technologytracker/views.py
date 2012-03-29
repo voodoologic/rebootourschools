@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-
+from django.utils import simplejson
 
 from technologytracker.models import *
 # Create your views here.
@@ -63,6 +63,53 @@ def schoolDetail(request, school_id):
      
      except School.DoesNotExist:        
          return HttpResponseNotFound('School not found')
+
+
+@login_required(login_url='/login/')    
+def schooljson(request, school_id):
+
+    try:
+
+        ###retrieve the district that the current user is assigned to
+        districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+        userDistrict = District.objects.get(pk=districtUserProfile)
+
+        school = School.objects.get(pk=school_id, district=userDistrict)
+
+        data = { 'school_name': school.full_name,
+                 'school_code': school.school_code, }
+
+        return HttpResponse(simplejson.dumps(data), content_type='application/json')
+
+    except School.DoesNotExist:
+
+        return HttpResponseNotFound('School not found')
+
+
+@login_required(login_url='/login/')    
+def computerjson(request, computer_pk):
+
+    try:
+
+        ###retrieve the district that the current user is assigned to
+        districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+        userDistrict = District.objects.get(pk=districtUserProfile)
+
+        computer = Computer.objects.get(pk=computer_pk, district=userDistrict)
+
+        data = { 'computer_school': computer.school.pk,
+                 'computer_pk': computer.pk,
+                 'computer_hd_size': computer.hd_size,
+                 'computer_monitor_size': computer.monitor_size,
+                 'computer_processor': computer.processor,
+                 'computer_ram': computer.ram,
+                 'computer_os': computer.os, }
+
+        return HttpResponse(simplejson.dumps(data), content_type='application/json')
+
+    except School.DoesNotExist:
+
+        return HttpResponseNotFound('Computer not found')
 
 
 @login_required(login_url='/login/')
@@ -148,22 +195,33 @@ def addComputer(request):
     userDistrict = District.objects.get(pk=districtUserProfile)
 
     if request.method == 'POST':
-        for i in range(int(request.POST['numberOfComputers']) - 1):
-            computer=Computer(district=userDistrict,
-                              school=School.objects.get(pk=request.POST['schoolId']),
-                              os=request.POST['computerOS'],
-                              processor=request.POST['computerProcessor'],
-                              hd_size=request.POST['hdSize'],
-                              ram=request.POST['ram'],)
-            computer.save()
 
-        return HttpResponseRedirect('/school/' + request.POST['schoolId'] + '/') # Redirect after POST
-    else:
-        form = ComputerForm() # An unbound form                
+        if request.POST['computerPk']:
+            try:
 
-    return render_to_response('addComputer.html', { 
-        'form': form},  
-        context_instance=RequestContext(request))        
+                computer = Computer.objects.get(pk=request.POST['computerPk'], district=userDistrict)
+                computer.os=request.POST['computerOS']
+                computer.processor=request.POST['computerProcessor']
+                computer.hd_size=request.POST['hdSize']
+                computer.ram=request.POST['ram']
+                computer.save()
+            except Computer.DoesNotExist:
 
+                return HttpResponseNotFound('Computer not found')
+        else:
+            for i in range(int(request.POST['numberOfComputers']) - 1):
+
+                computer=Computer(district=userDistrict,
+                                  school=School.objects.get(pk=request.POST['schoolPk']),
+                                  os=request.POST['computerOS'],
+                                  processor=request.POST['computerProcessor'],
+                                  hd_size=request.POST['hdSize'],
+                                  ram=request.POST['ram'],)
+                computer.save()
+
+        return HttpResponseRedirect('/school/' + request.POST['schoolPk'] + '/') # Redirect after POST
+
+    return render_to_response('addComputer.html', 
+                              context_instance=RequestContext(request))
 
 

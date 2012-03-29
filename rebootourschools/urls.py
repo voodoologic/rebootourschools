@@ -16,8 +16,9 @@ urlpatterns = patterns('',
     (r'^addComputer/$', addComputer),
     (r'^districts/$', districts),
     (r'^schools/$', schools),
-    
-    url(r'^school/(?P<school_id>\d+)/$', 'technologytracker.views.schoolDetail'),
+    (r'^schooljson/(?P<school_id>\d+)/$', schooljson),
+    (r'^computerjson/(?P<computer_pk>\d+)/$', computerjson),
+    (r'^school/(?P<school_id>\d+)/$', schoolDetail),
     
 
     # Uncomment the admin/doc line below to enable admin documentation:

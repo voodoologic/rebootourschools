@@ -31,7 +31,7 @@
       <td>{{ computer.monitor_size }}</td>
       <td>
         <a name="editComputer{{ computer.pk }}" id="editComputer{{ computer.pk }}" class="btn btn-info btn-mini"
-            data-toggle="modal" data-target="#addComputerModal" href="/updateComputer/{{ computer.pk }}/">Edit</a>
+            computerID="{{ computer.pk }}" href="/updateComputer/{{ computer.pk }}/">Edit</a>
         <a name="deleteComputer{{ computer.pk }}" id="deleteComputer{{ computer.pk }}" class="btn btn-danger btn-mini" href="/deleteComputer/{{ computer.pk }}/">Delete</a>
       </td>
     </tr>
@@ -42,7 +42,7 @@
 <br/>
 <br/>
 
-<a name="addComputer" id="addComputer" class="btn-primary btn-large" data-toggle="modal" data-target="#addComputerModal" href="/addComputer/">Add Computers</a>
+<a name="addComputer" id="addComputer" class="btn-primary btn-large" href="/addComputer/">Add Computers</a>
 
 <div class="modal hide" id="addComputerModal">
   <div class="modal-header">
@@ -84,12 +84,13 @@
         <label for="numberOfComputers">Number of Computers:</label>
         <input type="text" name="numberOfComputers" id="numberOfComputers" />
       </p>
-      <input type="hidden" name="schoolId" id="schoolId" value="{{ school.pk }}" />
+      <input type="hidden" name="schoolPk" id="schoolPk" value="{{ school.pk }}" />
+      <input type="hidden" name="computerPk" id="computerPk" value="" />
     </form>
   </div>
   <div class="modal-footer">
     <input type="button" class="btn" id="closeButton" value="Cancel" />
-    <input type="button" class="btn btn-primary" id="addButton" value="Add" />
+    <input type="button" class="btn btn-primary" id="addButton" value="Save" />
   </div>
 </div>
 
@@ -97,17 +98,39 @@
 <script type="text/javascript">
   $(document).ready( function(){
         
-    $("#closeButton").click(function() {
+    $('#closeButton').click(function() {
       $('#addComputerModal').modal('hide');
     });
 
-    $("#addButton").click( function() {
-      $("#addComputerForm").submit();
+    $('#addButton').click( function() {
+      $('#addComputerForm').submit();
     });
 
-    $("a[name^='editComputer']").click( function(e) {
+    $('#addComputer').click( function(e) {
       e.preventDefault();
-      console.log($(this));
+      $('#computerOS').val('');
+      $('#computerProcessor').val('');
+      $('#hdSize').val('');
+      $('#ram').val('');
+      $('#computerPk').val('');
+      $('#numberOfComputers').parent().show();
+      $('#addComputerModal').modal('show');
+    });
+
+    $('a[name^="editComputer"]').click( function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: '/computerjson/' + this.getAttribute('computerid') + '/'
+      }).done( function(data) {
+        $('#computerOS').val(data.computer_os);
+        $('#computerProcessor').val(data.computer_processor);
+        $('#hdSize').val(data.computer_hd_size);
+        $('#ram').val(data.computer_ram);
+        $('#schoolPk').val(data.computer_school);
+        $('#computerPk').val(data.computer_pk);
+        $('#numberOfComputers').parent().hide();
+        $('#addComputerModal').modal('show');
+      });
     });
   });
 </script>
