@@ -190,6 +190,14 @@ def addSchool(request):
 
 
 @login_required(login_url='/login/')
+def deleteSchool(request, school_pk):
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required(login_url='/login/')
 def addComputer(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
     userDistrict = District.objects.get(pk=districtUserProfile)
@@ -209,7 +217,7 @@ def addComputer(request):
 
                 return HttpResponseNotFound('Computer not found')
         else:
-            for i in range(int(request.POST['numberOfComputers']) - 1):
+            for i in range(int(request.POST['numberOfComputers'])):
 
                 computer=Computer(district=userDistrict,
                                   school=School.objects.get(pk=request.POST['schoolPk']),
@@ -224,4 +232,16 @@ def addComputer(request):
     return render_to_response('addComputer.html', 
                               context_instance=RequestContext(request))
 
+
+@login_required(login_url='/login/')
+def deleteComputer(request, computer_pk):
+    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+    userDistrict = District.objects.get(pk=districtUserProfile)
+
+    try:
+        computer = Computer.objects.get(pk=computer_pk, district=userDistrict)
+        computer.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except Computer.DoesNotExist:
+        return HttpResponseNotFound('Computer not found')
 
