@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     (r'^deleteComputer/(?P<computer_pk>\d+)/$', deleteComputer),
     (r'^districts/$', districts),
     (r'^schools/$', schools),
-    (r'^schooljson/(?P<school_id>\d+)/$', schooljson),
+    (r'^schooljson/(?P<school_pk>\d+)/$', schooljson),
     (r'^computerjson/(?P<computer_pk>\d+)/$', computerjson),
     (r'^school/(?P<school_id>\d+)/$', schoolDetail),
     

@@ -3,18 +3,33 @@
 {% block content %}
 <h2>Schools:</h2>
 
-<ul>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>School Name</th>
+      <th>School City</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
   {% for school in schools %}
-    <li>
-      <a href="/school/{{ school.id }}/">{{ school.full_name }} ({{ school.city }},{{ school.full_name}} )</a>
-    </li>
+    <tr>
+      <td><a href="/school/{{ school.pk }}/">{{ school.full_name }}</a></td>
+      <td>{{ school.city }}</td>
+      <td>
+        <a name="editSchool{{ school.pk }}" id="editSchool{{ school.pk }}" class="btn btn-info btn-mini"
+            schoolID="{{ school.pk }}" href="/updateSchool/{{ school.pk }}/">Edit</a>
+        <a name="deleteSchool{{ school.pk }}" id="deleteSchool{{ school.pk }}" class="btn btn-danger btn-mini" href="/deleteSchool/{{ school.pk }}/">Delete</a>
+      </td>
+    </tr>
   {% endfor %}
-</ul>
+  </tbody>
+</table>
 
 <br/>
 <br/>
 
-<a id="addSchool" class="btn-primary btn-large" data-toggle="modal" data-target="#addSchoolModal" href="/addSchool/">Add a School</a>
+<a name="addSchool" id="addSchool" class="btn-primary btn-large" href="/addSchool/">Add School</a>
 
 <div class="modal hide" id="addSchoolModal">
   <div class="modal-header">
@@ -24,17 +39,20 @@
   <div class="modal-body">
     <form action="/addSchool/" id="addSchoolForm" method="post">
       {% csrf_token %}
-      <label for="schoolName">Full Name:</label><br/>
-      <input type="text" name="schoolName" id="schoolName" /><br/>
-      <br/>
-      <label for="schoolCode">School Code:</label><br/>
-      <input type="text" name="schoolCode" id="schoolCode" /><br/>
-      <br/>
+      <p>
+        <label for="schoolName">Full Name:</label>
+        <input type="text" name="schoolName" id="schoolName" />
+      </p>
+      <p>
+        <label for="schoolCode">School Code:</label>
+        <input type="text" name="schoolCode" id="schoolCode" />
+      </p>
+      <input type="hidden" name="schoolPk" id="schoolPk" value="" />
     </form>
   </div>
   <div class="modal-footer">
     <input type="button" class="btn" id="closeButton" value="Cancel" />
-    <input type="button" class="btn btn-primary" id="addButton" value="Add" />
+    <input type="button" class="btn btn-primary" id="addButton" value="Save" />
   </div>
 </div>
 
@@ -48,6 +66,26 @@
 
     $("#addButton").click( function() {
       $("#addSchoolForm").submit();
+    });
+
+    $('#addSchool').click( function(e) {
+      e.preventDefault();
+      $('#schoolCode').val('');
+      $('#schoolName').val('');
+      $('#schoolPk').val('');
+      $('#addSchoolModal').modal('show');
+    });
+
+    $('a[name^="editSchool"]').click( function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: '/schooljson/' + this.getAttribute('schoolid') + '/'
+      }).done( function(data) {
+        $('#schoolCode').val(data.school_code);
+        $('#schoolName').val(data.school_name);
+        $('#schoolPk').val(data.school_pk);
+        $('#addSchoolModal').modal('show');
+      });
     });
 
   });

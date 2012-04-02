@@ -66,7 +66,7 @@ def schoolDetail(request, school_id):
 
 
 @login_required(login_url='/login/')    
-def schooljson(request, school_id):
+def schooljson(request, school_pk):
 
     try:
 
@@ -74,10 +74,11 @@ def schooljson(request, school_id):
         districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
         userDistrict = District.objects.get(pk=districtUserProfile)
 
-        school = School.objects.get(pk=school_id, district=userDistrict)
+        school = School.objects.get(pk=school_pk, district=userDistrict)
 
         data = { 'school_name': school.full_name,
-                 'school_code': school.school_code, }
+                 'school_code': school.school_code,
+                 'school_pk': school.pk, }
 
         return HttpResponse(simplejson.dumps(data), content_type='application/json')
 
@@ -141,7 +142,9 @@ def schools(request):
     ##get a list of all the districts
     schools = School.objects.all()
 
-    return render_to_response('schools.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'schools': schools})       
+    return render_to_response('schools.html',
+                              {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'schools': schools},
+                              context_instance=RequestContext(request) )
 
 
 @login_required(login_url='/login/')
@@ -174,19 +177,29 @@ def addSchool(request):
     districtAssets = userDistrict.districtasset_set
 
     if request.method == 'POST':
-        school=School(district=userDistrict,
-                      full_name=request.POST['schoolName'],
-                      school_code=request.POST['schoolCode'])
-        school.save()
-        return HttpResponseRedirect('/schools/') # Redirect after POST
-    else:
-        form = SchoolForm() # An unbound form                
 
-    return render_to_response('addSchool.html', {
-        'userDistrict': userDistrict, 
-        'districtAssets': districtAssets, 
-        'form': form},  
-        context_instance=RequestContext(request)) 
+        if request.POST['schoolPk']:
+            try:
+
+                school = School.objects.get(pk=request.POST['schoolPk'], district=userDistrict)
+                school.full_name = request.POST['schoolName']
+                school.school_code = request.POST['schoolCode']
+                school.save()
+            except School.DoesNotExist:
+
+                return HttpResponseNotFound('School not found')
+        else:
+            school=School(district=userDistrict,
+                          full_name=request.POST['schoolName'],
+                          school_code=request.POST['schoolCode'], )
+            school.save()
+
+        return HttpResponseRedirect('/schools/') # Redirect after POST
+
+    return render_to_response('addSchool.html',
+                              {'userDistrict': userDistrict,
+                               'districtAssets': districtAssets, },
+                              context_instance=RequestContext(request)) 
 
 
 @login_required(login_url='/login/')
@@ -194,7 +207,12 @@ def deleteSchool(request, school_pk):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
     userDistrict = District.objects.get(pk=districtUserProfile)
 
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    try:
+        school = School.objects.get(pk=school_pk, district=userDistrict)
+        school.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    except School.DoesNotExist:
+        return HttpResponseNotFound('School not found')
 
 
 @login_required(login_url='/login/')
