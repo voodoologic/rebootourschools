@@ -58,20 +58,30 @@ class District(models.Model):
         return self.district_code        
         
 
+class SchoolType(models.Model):
+    type_name=models.CharField(max_length=40)
+    
+    def __unicode__(self):
+        return self.type_name
+
+
 class School(models.Model):
     district = models.ForeignKey(District)
     full_name = models.CharField(max_length=60)
     school_code = models.CharField(max_length=10)
+    school_type = models.ForeignKey(SchoolType)
         
     def __unicode__(self):
         return self.full_name 
         
     def computer_count(self):
-        return u"%s" % ("num computers")
+        return u"%s" % ("num computers")	
     computer_count.short_description = "Computers at this school"           
 
+    class Meta:
+        ordering = ['school_type']
 
-    
+
 ####
 # User models
 ####
@@ -151,30 +161,3 @@ class MobileDevice(DistrictAsset):
     
     def __unicode__(self):
         return u"%s %s" % (self.manufacturer, self.model)
-        
-        
-####
-# Forms
-####        
-class DistrictForm(ModelForm):
-    class Meta:
-        model = District
-        
-class SchoolForm(ModelForm):
-    class Meta:
-        model = School
-        
-class ComputerForm(ModelForm):
-    class Meta:
-        model = Computer 
-        
-
-
-    
-    
-    
-    
-    
-    
-                                       
-    

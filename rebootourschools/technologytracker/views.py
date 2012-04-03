@@ -1,8 +1,6 @@
-from django.http import HttpResponse
-from django.http import HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 
@@ -78,6 +76,7 @@ def schooljson(request, school_pk):
 
         data = { 'school_name': school.full_name,
                  'school_code': school.school_code,
+                 'school_type': school.school_type.pk,
                  'school_pk': school.pk, }
 
         return HttpResponse(simplejson.dumps(data), content_type='application/json')
@@ -142,8 +141,13 @@ def schools(request):
     ##get a list of all the districts
     schools = School.objects.all()
 
+    schoolTypes = SchoolType.objects.all()
+
     return render_to_response('schools.html',
-                              {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'schools': schools},
+                              {'userDistrict': userDistrict, 
+                               'districtAssets': districtAssets, 
+                               'schoolTypes': schoolTypes, 
+                               'schools': schools},
                               context_instance=RequestContext(request) )
 
 
@@ -184,6 +188,7 @@ def addSchool(request):
                 school = School.objects.get(pk=request.POST['schoolPk'], district=userDistrict)
                 school.full_name = request.POST['schoolName']
                 school.school_code = request.POST['schoolCode']
+                school.school_type_pk = request.POST['schoolType']
                 school.save()
             except School.DoesNotExist:
 
@@ -192,13 +197,17 @@ def addSchool(request):
             school=School(district=userDistrict,
                           full_name=request.POST['schoolName'],
                           school_code=request.POST['schoolCode'], )
+            school.school_type_id = request.POST['schoolType']
             school.save()
 
         return HttpResponseRedirect('/schools/') # Redirect after POST
 
+    schoolTypes = SchoolType.objects.all()
+
     return render_to_response('addSchool.html',
                               {'userDistrict': userDistrict,
-                               'districtAssets': districtAssets, },
+                               'districtAssets': districtAssets, 
+                               'schoolTypes': schoolTypes, },
                               context_instance=RequestContext(request)) 
 
 
