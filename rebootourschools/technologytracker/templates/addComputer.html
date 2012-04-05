@@ -1,10 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Add a new Computer:</h2>
-<br /><br />
-<form action="/addComputer/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
-</form>
+
+<div class="hero-unit" id="addComputerHero">
+    <h2>Add Computers:</h2>
+    <br />
+    <br />
+    <form action="/addComputer/" id="addComputerForm" method="post">
+      {% csrf_token %}
+      <p>
+        <label for="computerOS">OS:</label>
+        <select name="computerOS" id="computerOS">
+        {% for opt in osChoices %}
+          <option value="{{ opt.0 }}">{{ opt.1 }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label for="computerProcessor">Processor:</label>
+        <input type="text" name="computerProcessor" id="computerProcessor" />
+      </p>
+      <p>
+        <label for="hdSize">HD Size:</label>
+        <select name="hdSize" id="hdSize">
+        {% for opt in hdChoices %}
+          <option value="{{ opt.0 }}">{{ opt.1 }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label for="ram">RAM:</label>
+        <select name="ram" id="ram">
+        {% for opt in ramChoices %}
+          <option value="{{ opt.0 }}">{{ opt.1 }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label for="numberOfComputers">Number of Computers:</label>
+        <input type="text" name="numberOfComputers" id="numberOfComputers" />
+      </p>
+      <input type="hidden" name="schoolId" id="schoolId" value="{{ school.pk }}" />
+      <a class="btn" name="closeButton" id="closeButton" href="/school/{{ school.id }}/">Cancel</a>
+      <input type="submit" class="btn btn-primary" name="addButton" id="addButton" value="Add" />
+    </form>
+</div>
+
 {% endblock %}

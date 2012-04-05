@@ -4,8 +4,6 @@ from technologytracker.views import *
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'rebootourschools.views.home', name='home'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^techtracker/', include('technologytracker.urls')),
     url(r'^techtrackerapi/', include('technologytrackerapi.urls')),
@@ -15,11 +13,14 @@ urlpatterns = patterns('',
     (r'^districtReporting/$', districtReporting),
     (r'^addDistrict/$', addDistrict),
     (r'^addSchool/$', addSchool),
+    (r'^deleteSchool/(?P<school_pk>\d+)/$', deleteSchool),
     (r'^addComputer/$', addComputer),
+    (r'^deleteComputer/(?P<computer_pk>\d+)/$', deleteComputer),
     (r'^districts/$', districts),
     (r'^schools/$', schools),
-    
-    url(r'^school/(?P<school_id>\d+)/$', 'technologytracker.views.schoolDetail'),
+    (r'^schooljson/(?P<school_pk>\d+)/$', schooljson),
+    (r'^computerjson/(?P<computer_pk>\d+)/$', computerjson),
+    (r'^school/(?P<school_id>\d+)/$', schoolDetail),
     
 
     # Uncomment the admin/doc line below to enable admin documentation:

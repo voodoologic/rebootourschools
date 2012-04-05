@@ -10,3 +10,7 @@ body.no-user-base {
     text-align: center;
 }
 
+
+input.btn[type=submit] {
+    margin-bottom: 1px;
+}

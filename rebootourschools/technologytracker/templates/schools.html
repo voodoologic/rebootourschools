@@ -2,9 +2,113 @@
 
 {% block content %}
 <h2>Schools:</h2>
+<<<<<<< HEAD
 {% for school in schools %}
     <li>
 		<a href="/school/{{ school.id }}/">{{ school.full_name }} ({{ school.city }},{{ school.full_name}} )</a>
 	</li>
 {% endfor %}
 {% endblock %}
+=======
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>School Name</th>
+      <th>School Type</th>
+      <th>School City</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for school in schools %}
+    <tr>
+      <td><a href="/school/{{ school.pk }}/">{{ school.full_name }}</a></td>
+      <td>{{ school.school_type }}</td>
+      <td>{{ school.city }}</td>
+      <td>
+        <a name="editSchool{{ school.pk }}" id="editSchool{{ school.pk }}" class="btn btn-info btn-mini"
+            schoolID="{{ school.pk }}" href="/updateSchool/{{ school.pk }}/">Edit</a>
+        <a name="deleteSchool{{ school.pk }}" id="deleteSchool{{ school.pk }}" class="btn btn-danger btn-mini" href="/deleteSchool/{{ school.pk }}/">Delete</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<br/>
+<br/>
+
+<a name="addSchool" id="addSchool" class="btn-primary btn-large" href="/addSchool/">Add School</a>
+
+<div class="modal hide" id="addSchoolModal">
+  <div class="modal-header">
+    <a href="#" class="close" id="closeModal" data-dismiss="modal">&times;</a>
+    <h2>Add a new School:</h2>
+  </div>
+  <div class="modal-body">
+    <form action="/addSchool/" id="addSchoolForm" method="post">
+      {% csrf_token %}
+      <p>
+        <label for="schoolName">Full Name:</label>
+        <input type="text" name="schoolName" id="schoolName" />
+      </p>
+      <p>
+        <label for="schoolCode">School Code:</label>
+        <input type="text" name="schoolCode" id="schoolCode" />
+      </p>
+      <p>
+        <label for="schooltype">School Type:</label>
+        <select name="schoolType" id="schooltype">
+        {% for schoolType in schoolTypes %}
+          <option value="{{ schoolType.pk }}">{{ schoolType.type_name }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <input type="hidden" name="schoolPk" id="schoolPk" value="" />
+    </form>
+  </div>
+  <div class="modal-footer">
+    <input type="button" class="btn" id="closeButton" value="Cancel" />
+    <input type="button" class="btn btn-primary" id="addButton" value="Save" />
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready( function(){
+        
+    $("#closeButton").click(function() {
+      $('#addSchoolModal').modal('hide');
+    });
+
+    $("#addButton").click( function() {
+      $("#addSchoolForm").submit();
+    });
+
+    $('#addSchool').click( function(e) {
+      e.preventDefault();
+      $('#schoolCode').val('');
+      $('#schoolName').val('');
+      $('#schoolPk').val('');
+      $('#addSchoolModal').modal('show');
+    });
+
+    $('a[name^="editSchool"]').click( function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: '/schooljson/' + this.getAttribute('schoolid') + '/'
+      }).done( function(data) {
+        $('#schoolCode').val(data.school_code);
+        $('#schoolName').val(data.school_name);
+        $('#schoolPk').val(data.school_pk);
+        $('#addSchoolModal').modal('show');
+      });
+    });
+
+  });
+</script>
+
+
+{% endblock %}
+>>>>>>> c0424acf1479d3a6074d07258f12eebce8cd9e5c

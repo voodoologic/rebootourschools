@@ -4,7 +4,6 @@
   <title>{% block title %}Technology Tracker{% endblock %}</title>
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/technologytracker/css/techtracker.css" />
-  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
   <script src="/static/bootstrap/js/bootstrap.min.js"></script>
   <script src="/static/highcharts/highcharts.js"></script>
@@ -14,26 +13,20 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/">Technology Tracker</a>
+          <a class="brand" href="/home/">Technology Tracker</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li>
+                <a href="/home/">Home</a>
+              </li>
+              <li>
+                <a href="/districts/">Districts</a>
+              </li>
+              <li>
+                <a href="/schools/">Schools</a>
+              </li>
+              <li>
                 <a href="/districtReporting/">District Reporting</a>
-              </li>
-			  <li>
-                <a href="/districts/">District List</a>
-              </li>
-			  <li>
-                <a href="/schools/">School List</a>
-              </li>
-			  <li>
-                <a href="/addDistrict/">Add a District</a>
-              </li>
-			  <li>
-                <a href="/addSchool/">Add a School</a>
-              </li>
-			  <li>
-                <a href="/addComputer/">Add a Computer</a>
               </li>
             </ul>
           </div>

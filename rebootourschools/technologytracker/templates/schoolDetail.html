@@ -2,35 +2,45 @@
 
 
 {% block content %}
+
 <h2>{{ school }}</h2>
 <h3>Total Computers: {{ computerCount }}</h3>
 <h4>{{ osxCount }} Mac | {{ linuxCount }} Linux | {{ windowsCount }} Windows</h4>
+
 <hr/>
-<button class="btn-primary" id="addComputer">Add a Computer</button><br/><br/>
+
+<br/>
 
 <table class="table table-bordered table-striped">
-	<thead>
-		<tr>
-			<th>OS</th>
-			<th>Processor</th>
-			<th>HD Size</th>
-			<th>RAM</th>
-			<th>Monitor Size</th>
-		</tr>
-	</thead>
-	<tbody>
-	{% for computer in computers %}
+  <thead>
     <tr>
-		<td>{{ computer.os }}</td>
-		<td>{{ computer.processor }}</td>
-		<td>{{ computer.hd_size }}</td>
-		<td>{{ computer.ram }}</td>
-		<td>{{ computer.monitor_size }}</td>
-	</tr>
-	{% endfor %}
-	</tbody>
+      <th>OS</th>
+      <th>Processor</th>
+      <th>HD Size</th>
+      <th>RAM</th>
+      <th>Monitor Size</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for computer in computers %}
+    <tr>
+      <td>{{ computer.os }}</td>
+      <td>{{ computer.processor }}</td>
+      <td>{{ computer.hd_size }}</td>
+      <td>{{ computer.ram }}</td>
+      <td>{{ computer.monitor_size }}</td>
+      <td>
+        <a name="editComputer{{ computer.pk }}" id="editComputer{{ computer.pk }}" class="btn btn-info btn-mini"
+            computerID="{{ computer.pk }}" href="/updateComputer/{{ computer.pk }}/">Edit</a>
+        <a name="deleteComputer{{ computer.pk }}" id="deleteComputer{{ computer.pk }}" class="btn btn-danger btn-mini" href="/deleteComputer/{{ computer.pk }}/">Delete</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
 </table>
 
+<<<<<<< HEAD
 <img src="{{ osChart }}">
 <img src="{{ hdChart }}">
 <img src="{{ ramChart }}">
@@ -47,17 +57,104 @@
 	<div class="modal-footer">
 		<input type="submit" value="Add" />
 	</form>
+=======
+<br/>
+<br/>
+
+<a name="addComputer" id="addComputer" class="btn-primary btn-large" href="/addComputer/">Add Computers</a>
+
+<div class="modal hide" id="addComputerModal">
+  <div class="modal-header">
+    <a href="#" class="close" id="closeModal" data-dismiss="modal">&times;</a>
+    <h2>Add Computers:</h2>
+  </div>
+  <div class="modal-body">
+    <form action="/addComputer/" id="addComputerForm" method="post">
+      {% csrf_token %}
+      <p>
+        <label for="computerOS">OS:</label>
+        <select name="computerOS" id="computerOS">
+        {% for opt in osChoices %}
+          <option value="{{ opt.0 }}">{{ opt.1 }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label for="computerProcessor">Processor:</label>
+        <input type="text" name="computerProcessor" id="computerProcessor" />
+      </p>
+      <p>
+        <label for="hdSize">HD Size:</label>
+        <select name="hdSize" id="hdSize">
+        {% for opt in hdChoices %}
+          <option value="{{ opt.0 }}">{{ opt.1 }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label for="ram">RAM:</label>
+        <select name="ram" id="ram">
+        {% for opt in ramChoices %}
+          <option value="{{ opt.0 }}">{{ opt.1 }}</option>
+        {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label for="numberOfComputers">Number of Computers:</label>
+        <input type="text" name="numberOfComputers" id="numberOfComputers" />
+      </p>
+      <input type="hidden" name="schoolPk" id="schoolPk" value="{{ school.pk }}" />
+      <input type="hidden" name="computerPk" id="computerPk" value="" />
+    </form>
+  </div>
+  <div class="modal-footer">
+    <input type="button" class="btn" id="closeButton" value="Cancel" />
+    <input type="button" class="btn btn-primary" id="addButton" value="Save" />
+  </div>
+>>>>>>> c0424acf1479d3a6074d07258f12eebce8cd9e5c
 </div>
 
-<script type="text/javascript">
-$(document).ready(function(){
-	
-	$("#addComputer").click(function() {
-		$('#addComputerForm').modal('show');
-	});
 
-});
+<script type="text/javascript">
+  $(document).ready( function(){
+        
+    $('#closeButton').click(function() {
+      $('#addComputerModal').modal('hide');
+    });
+
+    $('#addButton').click( function() {
+      $('#addComputerForm').submit();
+    });
+
+    $('#addComputer').click( function(e) {
+      e.preventDefault();
+      $('#computerOS').val('');
+      $('#computerProcessor').val('');
+      $('#hdSize').val('');
+      $('#ram').val('');
+      $('#computerPk').val('');
+      $('#numberOfComputers').parent().show();
+      $('#addComputerModal').modal('show');
+    });
+
+    $('a[name^="editComputer"]').click( function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: '/computerjson/' + this.getAttribute('computerid') + '/'
+      }).done( function(data) {
+        $('#computerOS').val(data.computer_os);
+        $('#computerProcessor').val(data.computer_processor);
+        $('#hdSize').val(data.computer_hd_size);
+        $('#ram').val(data.computer_ram);
+        $('#schoolPk').val(data.computer_school);
+        $('#computerPk').val(data.computer_pk);
+        $('#numberOfComputers').parent().hide();
+        $('#addComputerModal').modal('show');
+      });
+    });
+  });
 </script>
+
 
 {% endblock %}
 
