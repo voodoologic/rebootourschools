@@ -130,13 +130,49 @@ def districtReporting(request):
     
     ###retrieve all of the schools in the user's district
     schools = School.objects.filter(district=userDistrict)
-    schoolCount = School.objects.filter(district=userDistrict).count()         
+    schoolCount = School.objects.filter(district=userDistrict).count()
+    
+    schoolDataset = []
+    schoolLabels = []
+    for school in schools:
+        schoolLabels.append(school.full_name)
+        computerCount = Computer.objects.filter(school=school).count()
+        schoolDataset.append(computerCount)
+
+        computerCountChart = VerticalBarStack(schoolDataset)
+        #computerCountChart.label(schoolLabels)
+        computerCountChart.color('4d89f9','c6d9fd')
+        computerCountChart.title('Count by school')
+        computerCountChart.size(600,375)
+        
+    horizontalBarStack = HorizontalBarStack(['hello','world'], encoding='simple')
+    horizontalBarStack.color('4d89f9','c6d9fd')
+    horizontalBarStack.title('Memory')
+    horizontalBarStack.size(400,250)    
+    horizontalBarStack.label('1 GB','2 GB','4 GB', '8 GB')
+    
+    verticalBarGroup = VerticalBarGroup(['hello','world'], encoding='simple')
+    verticalBarGroup.color('4d89f9','c6d9fd')
+    verticalBarGroup.size(400,250)
+    
+    meter = Meter(10)
+    meter.label('10th Percentile')
+    meter.size(400,200)
+    
+    verticalBarStack = VerticalBarStack([ [30,25,26,10,20],[50,60,80,40,20] ], encoding='text')
+    verticalBarStack.color('4d89f9', 'c6d9fd')
+    verticalBarStack.size(400,200)
     
     return render_to_response('districtReporting.html', {
         'userDistrict': userDistrict, 
         'districtAssets': districtAssets, 
         'schools': schools,
         'schoolCount': schoolCount,
+        'computerCountChart': computerCountChart,
+        'horizontalBarStack': horizontalBarStack,
+        'verticalBarGroup': verticalBarGroup,
+        'meter': meter,
+        'verticalBarStack': verticalBarStack,
     })
     
 @login_required(login_url='/login/')
