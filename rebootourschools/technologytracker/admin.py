@@ -1,4 +1,4 @@
-from technologytracker.models import School, Computer, SchoolType, Tablet, District, DistrictUserProfile
+from technologytracker.models import School, Computer, Tablet, District, DistrictUserProfile
 from django.contrib import admin
 
 class SchoolsInline(admin.TabularInline):
@@ -9,10 +9,6 @@ class ComputersInline(admin.TabularInline):
     model = Computer
     extra = 1
     
-# class PrintersInline(admin.TabularInline):
-#     model = Printer
-#     extra = 1
-
 class TabletsInline(admin.TabularInline):
     model = Tablet
     extra = 1    
@@ -38,6 +34,5 @@ class DistrictAdmin(admin.ModelAdmin):
 admin.site.register(School, SchoolAdmin)
 admin.site.register(District, DistrictAdmin)
 admin.site.register(DistrictUserProfile)
-admin.site.register(SchoolType)
 
 

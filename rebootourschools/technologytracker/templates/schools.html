@@ -16,7 +16,7 @@
   {% for school in schools %}
     <tr>
       <td><a href="/school/{{ school.pk }}/">{{ school.full_name }}</a></td>
-      <td>{{ school.school_type }}</td>
+      <td>{{ school.get_school_type_display }}</td>
       <td>{{ school.city }}</td>
       <td>
         <a name="editSchool{{ school.pk }}" id="editSchool{{ school.pk }}" class="btn btn-info btn-mini"
@@ -52,8 +52,8 @@
       <p>
         <label for="schooltype">School Type:</label>
         <select name="schoolType" id="schooltype">
-        {% for schoolType in schoolTypes %}
-          <option value="{{ schoolType.pk }}">{{ schoolType.type_name }}</option>
+        {% for id, label in schoolTypes %}
+          <option value="{{ id }}">{{ label }}</option>
         {% endfor %}
         </select>
       </p>

@@ -58,19 +58,21 @@ class District(models.Model):
         return self.district_code        
         
 
-class SchoolType(models.Model):
-    type_name=models.CharField(max_length=40)
-    
-    def __unicode__(self):
-        return self.type_name
-
-
 class School(models.Model):
+
+    SCHOOL_TYPE_CHOICES = (
+        (1, 'Elementary School'),
+        (2, 'Junior High School'),
+        (3, 'High School'),
+    )
+
     district = models.ForeignKey(District)
     full_name = models.CharField(max_length=60)
-    school_code = models.CharField(max_length=10)
-    school_type = models.ForeignKey(SchoolType)
-        
+    school_code = models.CharField(max_length=10, null=True)
+    school_type = models.SmallIntegerField(choices=SCHOOL_TYPE_CHOICES)
+    student_count = models.PositiveIntegerField(null=True)
+    teacher_count = models.PositiveIntegerField(null=True)
+
     def __unicode__(self):
         return self.full_name 
         
@@ -80,6 +82,19 @@ class School(models.Model):
 
     class Meta:
         ordering = ['school_type']
+
+
+class SchoolRoom(models.Model):
+
+    SCHOOL_ROOM_TYPE_CHOICES = (
+        (1, 'Class Room'),
+        (2, 'Lab'),
+    )
+
+    room_name = models.CharField(max_length=60)
+    room_description = models.TextField()
+    school_room_type = models.SmallIntegerField(choices=SCHOOL_ROOM_TYPE_CHOICES)
+
 
 
 ####
@@ -112,6 +127,7 @@ class DistrictUserProfile(models.Model):
 class DistrictAsset(models.Model):
     district = models.ForeignKey(District)
     school = models.ForeignKey(School)
+    room = models.ForeignKey(SchoolRoom)
 
 class Computer(DistrictAsset):
     os = models.CharField(max_length=30, choices=OS_CHOICES)

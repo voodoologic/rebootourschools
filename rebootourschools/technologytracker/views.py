@@ -76,7 +76,7 @@ def schooljson(request, school_pk):
 
         data = { 'school_name': school.full_name,
                  'school_code': school.school_code,
-                 'school_type': school.school_type.pk,
+                 'school_type': school.school_type,
                  'school_pk': school.pk, }
 
         return HttpResponse(simplejson.dumps(data), content_type='application/json')
@@ -141,7 +141,7 @@ def schools(request):
     ##get a list of all the districts
     schools = School.objects.all()
 
-    schoolTypes = SchoolType.objects.all()
+    schoolTypes = School.SCHOOL_TYPE_CHOICES
 
     return render_to_response('schools.html',
                               {'userDistrict': userDistrict, 
@@ -188,7 +188,7 @@ def addSchool(request):
                 school = School.objects.get(pk=request.POST['schoolPk'], district=userDistrict)
                 school.full_name = request.POST['schoolName']
                 school.school_code = request.POST['schoolCode']
-                school.school_type_pk = request.POST['schoolType']
+                school.school_type = request.POST['schoolType']
                 school.save()
             except School.DoesNotExist:
 
@@ -197,12 +197,12 @@ def addSchool(request):
             school=School(district=userDistrict,
                           full_name=request.POST['schoolName'],
                           school_code=request.POST['schoolCode'], )
-            school.school_type_id = request.POST['schoolType']
+            school.school_type = request.POST['schoolType']
             school.save()
 
         return HttpResponseRedirect('/schools/') # Redirect after POST
 
-    schoolTypes = SchoolType.objects.all()
+    schoolTypes = School.SCHOOL_TYPE_CHOICES
 
     return render_to_response('addSchool.html',
                               {'userDistrict': userDistrict,
