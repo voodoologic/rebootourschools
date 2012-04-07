@@ -20,12 +20,7 @@ class SchoolAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'school_code', 'district')
     list_filter = ['district',]
     search_fields = ['full_name', 'school_code']
-<<<<<<< HEAD
-    inlines = [ComputersInline]
-    
-=======
 
->>>>>>> c0424acf1479d3a6074d07258f12eebce8cd9e5c
 class DistrictAdmin(admin.ModelAdmin):
     fieldsets = [
         ('District info', {'fields' : ['full_name', 'district_code', 'city', 'state', 'county']})      

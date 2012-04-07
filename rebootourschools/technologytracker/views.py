@@ -2,12 +2,8 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-<<<<<<< HEAD
 from GChartWrapper import *
-
-=======
 from django.utils import simplejson
->>>>>>> c0424acf1479d3a6074d07258f12eebce8cd9e5c
 
 from technologytracker.models import *
 # Create your views here.
@@ -52,17 +48,6 @@ def schoolDetail(request, school_id):
          linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
          windowsCount = Computer.objects.filter(school=school, os='WINDOWS').count()
          
-<<<<<<< HEAD
-         if request.method == 'POST':
-             form = ComputerForm(request.POST)
-             if form.is_valid():
-                 form.save()
-
-                 return HttpResponseRedirect('/addComputer/') # Redirect after POST
-         else:
-             form = ComputerForm() # An unbound form
-         
-         
          ##os chart
          osxCount = Computer.objects.filter(school=school, os='OSX').count()
          linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
@@ -96,19 +81,7 @@ def schoolDetail(request, school_id):
          ramChart.label('1 GB','2 GB','4 GB', '8 GB')
          ramChart.color('4d89f9','c6d9fd')
          ramChart.title('Memory (RAM)') 
-         
-         return render_to_response('schoolDetail.html', {'school':school, 
-            'computers':computers, 
-            'computerCount':computerCount,
-            'osxCount':osxCount,
-            'linuxCount':linuxCount,
-            'windowsCount':windowsCount,
-            'form':form,
-            'osChart':osChart,
-            'hdChart':hdChart,
-            'ramChart':ramChart,
-            })
-=======
+ 
          return render_to_response('schoolDetail.html',
                                    {'school':school,
                                     'computers':computers,
@@ -118,10 +91,12 @@ def schoolDetail(request, school_id):
                                     'windowsCount':windowsCount,
                                     'hdChoices':HD_SIZE_CHOICES,
                                     'ramChoices':RAM_SIZE_CHOICES,
+                                    'osChart':osChart,
+                                    'hdChart':hdChart,
+                                    'ramChart':ramChart,
                                     'osChoices':OS_CHOICES, },
                                     context_instance=RequestContext(request))
->>>>>>> c0424acf1479d3a6074d07258f12eebce8cd9e5c
-     
+ 
      except School.DoesNotExist:        
          return HttpResponseNotFound('School not found')
 
