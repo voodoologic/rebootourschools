@@ -155,12 +155,7 @@ def districtReporting(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
     userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
-<<<<<<< HEAD
-    
-    ###retrieve the district that the current user is assigned to
-    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
-    userDistrict = District.objects.get(pk=districtUserProfile)
-    
+
     ###retrieve all of the schools in the user's district
     schools = School.objects.filter(district=userDistrict)
     schoolCount = School.objects.filter(district=userDistrict).count()
@@ -208,11 +203,6 @@ def districtReporting(request):
         'verticalBarStack': verticalBarStack,
     })
     
-=======
-    return render_to_response('districtReporting.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets})
-
-
->>>>>>> c0424acf1479d3a6074d07258f12eebce8cd9e5c
 @login_required(login_url='/login/')
 def districts(request):
     districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
