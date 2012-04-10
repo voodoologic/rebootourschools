@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from GChartWrapper import *
 from django.utils import simplejson
+from collections import defaultdict
 
 from technologytracker.models import *
 # Create your views here.
@@ -22,10 +23,21 @@ def home(request):
         
         ###retrieve all of the schools in the user's district
         schools = School.objects.filter(district=userDistrict)
-        schoolCount = School.objects.filter(district=userDistrict).count()
+        schoolCount = School.objects.filter(district=userDistrict).count()        
+        computerCount = Computer.objects.filter(district=userDistrict).count()        
+        
+        teacherCount = sum(school.teacher_count for school in schools)
+        elementarySchoolCount = School.objects.filter(district=userDistrict, school_type=1).count()    
+
+            
         
         return render_to_response('home.html',
-                                  {'userDistrict': userDistrict, 'schools': schools, 'schoolCount':schoolCount},
+                                  {'userDistrict': userDistrict, 
+                                  'schools': schools, 
+                                  'schoolCount':schoolCount,
+                                  'computerCount': computerCount,
+                                  'teacherCount': teacherCount,
+                                  },
                                   context_instance=RequestContext(request))
     
     ###exceptions

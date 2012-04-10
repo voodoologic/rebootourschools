@@ -1,30 +1,73 @@
 {% extends "base.html" %}
 
-{% block title %}{{ userDistrict.full_name }} ({{ userDistrict.district_code }}){% endblock %}
+{% block title %} 
+	{{ userDistrict.full_name }} ({{ userDistrict.district_code }})
+{% endblock %}
 
-<h1>{{ userDistrict.full_name }} ({{ userDistrict.district_code }})</h1>
 
 {% block content %}
+<h1>{{ userDistrict.full_name }}</h1>
+<h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3>
 
-<h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3><br/>
-<h4>{{ schoolCount }} schools in this district
+<div id="actions">
+	<div class="row">
+		<div class="span6 button">
+			<a id="addSchool" class="btn-primary btn-large" data-toggle="modal" data-target="#addSchoolModal" href="/addSchool/">Add a School</a>
+		</div>
+		<div class="span6">
+			<p id="districtFilter"></p>
+		</div>
+	</div>		
+</div>
 
-<hr/>
 
-<h2>{{ userDistrict.district_code }} Schools:</h2>
+<div id="stats">
+	<div class="row">
+		<div class="span4 stat">
+			<h4 class="statTitle">Number of Schools</h4>
+			<p class="statValue">{{ schoolCount }}</p>
+		</div>
+		<div class="span4 stat">
+			<h4 class="statTitle">Number of Computers</h4>
+			<p class="statValue">{{ computerCount }}</p>
+		</div>
+		<div class="span4 stat">
+			<h4 class="statTitle">Number of Teachers</h4>
+			<p class="statValue">{{ teacherCount }}</p>
+		</div>
+	</div>
+</div>
+
+<div id="stats">
+	<div class="row">
+		<div class="span4 stat">
+			<h4 class="statTitle">Elementary Schools</h4>
+			<p class="statValue">{{ elementarySchoolCount }} 0</p>
+		</div>
+		<div class="span4 stat">
+			<h4 class="statTitle">Middle Schools</h4>
+			<p class="statValue">{{ schoolCount }}</p>
+		</div>
+		<div class="span4 stat">
+			<h4 class="statTitle">High Schools</h4>
+			<p class="statValue">{{ schoolCount }}</p>
+		</div>
+	</div>
+</div>	
+
+
+
+<!-- <h2>{{ userDistrict.district_code }} Schools:</h2>
 
 <ul>
   {% for school in schools %}
   <li>
-    <a href="/school/{{ school.id}} ">{{ school.full_name }} ( {{ school.school_code }} )</a>
+    <a href="/school/{{ school.id }} ">{{ school.full_name }} ( {{ school.school_code }} )</a>
   </li>
   {% endfor %}
-</ul>
+</ul> -->
 
-<br/>
-<br/>
 
-<a id="addSchool" class="btn-primary btn-large" data-toggle="modal" data-target="#addSchoolModal" href="/addSchool/">Add a School</a>
 
 <div class="modal hide" id="addSchoolModal">
   <div class="modal-header">
