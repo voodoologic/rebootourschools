@@ -4,50 +4,74 @@
 {% block content %}
 
 <h2>{{ school }}</h2>
-<h3>Total Computers: {{ computerCount }}</h3>
-<h4>{{ osxCount }} Mac | {{ linuxCount }} Linux | {{ windowsCount }} Windows</h4>
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li>
+      <a href="#rooms" data-toggle="tab">Rooms</a>
+    </li>
+    <li>
+      <a href="#computers" data-toggle="tab">Computers</a>
+    </li>
+    <li>
+      <a href="#reporting" data-toggle="tab">Reporting</a>
+    </li>
+  </ul>
+  <div class="tab-content">
 
-<hr/>
+    <div class="tab-pane active" id="rooms">
+      <p>I'm in Section 1.</p>
+    </div>
 
-<br/>
+    <div class="tab-pane" id="computers">
 
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th>OS</th>
-      <th>Processor</th>
-      <th>HD Size</th>
-      <th>RAM</th>
-      <th>Monitor Size</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for computer in computers %}
-    <tr>
-      <td>{{ computer.os }}</td>
-      <td>{{ computer.processor }}</td>
-      <td>{{ computer.hd_size }}</td>
-      <td>{{ computer.ram }}</td>
-      <td>{{ computer.monitor_size }}</td>
-      <td>
-        <a name="editComputer{{ computer.pk }}" id="editComputer{{ computer.pk }}" class="btn btn-info btn-mini"
-            computerID="{{ computer.pk }}" href="/updateComputer/{{ computer.pk }}/">Edit</a>
-        <a name="deleteComputer{{ computer.pk }}" id="deleteComputer{{ computer.pk }}" class="btn btn-danger btn-mini" href="/deleteComputer/{{ computer.pk }}/">Delete</a>
-      </td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+      <h3>Total Computers: {{ computerCount }}</h3>
+      <h4>{{ osxCount }} Mac | {{ linuxCount }} Linux | {{ windowsCount }} Windows</h4>
 
-<img src="{{ osChart }}">
-<img src="{{ hdChart }}">
-<img src="{{ ramChart }}">
+      <br/>
 
-<br/>
-<br/>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>OS</th>
+            <th>Processor</th>
+            <th>HD Size</th>
+            <th>RAM</th>
+            <th>Monitor Size</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for computer in computers %}
+          <tr>
+            <td>{{ computer.os }}</td>
+            <td>{{ computer.processor }}</td>
+            <td>{{ computer.hd_size }}</td>
+            <td>{{ computer.ram }}</td>
+            <td>{{ computer.monitor_size }}</td>
+            <td>
+              <a name="editComputer{{ computer.pk }}" id="editComputer{{ computer.pk }}" class="btn btn-info btn-mini"
+                  computerID="{{ computer.pk }}" href="/updateComputer/{{ computer.pk }}/">Edit</a>
+              <a name="deleteComputer{{ computer.pk }}" id="deleteComputer{{ computer.pk }}" class="btn btn-danger btn-mini" href="/deleteComputer/{{ computer.pk }}/">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
 
-<a name="addComputer" id="addComputer" class="btn-primary btn-large" href="/addComputer/">Add Computers</a>
+      <br/>
+      <br/>
+
+      <a name="addComputer" id="addComputer" class="btn-primary btn-large" href="/addComputer/">Add Computers</a>
+    </div>
+
+    <div class="tab-pane" id="reporting">
+      <img src="{{ osChart }}">
+      <img src="{{ hdChart }}">
+      <img src="{{ ramChart }}">
+    </div>
+
+  </div>
+</div>
 
 <div class="modal hide" id="addComputerModal">
   <div class="modal-header">
