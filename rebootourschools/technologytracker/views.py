@@ -26,7 +26,7 @@ def home(request):
         schoolCount = School.objects.filter(district=userDistrict).count()        
         computerCount = Computer.objects.filter(district=userDistrict).count()        
         
-        teacherCount = sum(school.teacher_count for school in schools)
+        teacherCount = sum(school.teacher_count or 0 for school in schools)
         elementarySchoolCount = School.objects.filter(district=userDistrict, school_type=1).count()    
 
             
