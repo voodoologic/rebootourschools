@@ -14,12 +14,16 @@
 		<div class="span6 button">
 			<a id="addSchool" class="btn-primary btn-large" data-toggle="modal" data-target="#addSchoolModal" href="/addSchool/">Add a School</a>
 		</div>
-		<div class="span6">
-			<p id="districtFilter"></p>
+		<div class="span6 select">
+			<p>Navigate to a school:</p>
+			<select name="school">
+			    {% for school in schools %}
+					<option value="{{school.id}}" selected="selected">{{school.full_name}}</option>
+			    {% endfor %}
+			</select>
 		</div>
 	</div>		
 </div>
-
 
 <div id="stats">
 	<div class="row">
@@ -51,6 +55,19 @@
 		<div class="span4 stat">
 			<h4 class="statTitle">High Schools</h4>
 			<p class="statValue">{{ schoolCount }}</p>
+		</div>
+	</div>
+</div>
+
+<div id="stats">
+	<div class="row">
+		<div class="span6 stat">
+			<h4 class="statTitle">Sample Chart 1</h4>
+			<img src="{{ chart1 }}" class="center">
+		</div>
+		<div class="span6 stat">
+			<h4 class="statTitle">Sample Chart 2</h4>
+			<img src="{{ chart2 }}" class="center">
 		</div>
 	</div>
 </div>	

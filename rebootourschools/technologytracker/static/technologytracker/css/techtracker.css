@@ -29,7 +29,10 @@ div.button {
 #actions .button {
     float:left;
 }
-
+#actions .select {
+    float:right;
+    text-align: right;
+}
 #stats .row {
     margin-top: 30px;
 }
@@ -47,4 +50,9 @@ div.button {
     font-size: 60px;
     line-height: 120px;
     text-align: center;
+}
+.center {
+    margin-left:10%;
+    margin-right:auto;
+    width:80%;
 }

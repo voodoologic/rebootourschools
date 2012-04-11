@@ -24,11 +24,23 @@ def home(request):
         ###retrieve all of the schools in the user's district
         schools = School.objects.filter(district=userDistrict)
         schoolCount = School.objects.filter(district=userDistrict).count()        
+        computers = Computer.objects.filter(district=userDistrict)
         computerCount = Computer.objects.filter(district=userDistrict).count()        
         
-        teacherCount = sum(school.teacher_count or 0 for school in schools)
-        elementarySchoolCount = School.objects.filter(district=userDistrict, school_type=1).count()    
-
+        teacherCount = sum(school.teacher_count for school in schools)
+        elementarySchoolCount = School.objects.filter(district=userDistrict, school_type=1).count()
+        
+        chart1 = Line('cEAELFJHUc',encoding='simple')
+        chart1.color('76A4FB')
+        chart1.line(2)
+        chart1.axes('x')
+        chart1.axes.range(0,10,50,5)
+                
+        chart2 = Line('cEAELFJHUc',encoding='simple')
+        chart2.color('76A4FB')
+        chart2.line(2)
+        chart2.axes('x')
+        chart2.axes.range(0,10,50,5)
             
         
         return render_to_response('home.html',
@@ -37,6 +49,9 @@ def home(request):
                                   'schoolCount':schoolCount,
                                   'computerCount': computerCount,
                                   'teacherCount': teacherCount,
+                                  'elementarySchoolCount': elementarySchoolCount,
+                                  'chart1': chart1,
+                                  'chart2': chart2,
                                   },
                                   context_instance=RequestContext(request))
     
