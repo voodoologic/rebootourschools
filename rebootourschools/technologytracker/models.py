@@ -91,8 +91,17 @@ class SchoolRoom(models.Model):
         (2, 'Lab'),
     )
 
+    CONNECTION_TYPE_CHOICES = (
+        (1, 'Wired'),
+        (2, 'Wireless'),
+        (3, 'Mixed'),
+    )
+
     room_name = models.CharField(max_length=60)
     room_description = models.TextField()
+    room_connection_speed = models.IntegerField(null=True)
+    room_connection_count = models.SmallIntegerField(null=True)
+    room_connection_type = models.SmallIntegerField(choices=CONNECTION_TYPE_CHOICES,null=True)
     school_room_type = models.SmallIntegerField(choices=SCHOOL_ROOM_TYPE_CHOICES)
 
 
@@ -126,15 +135,15 @@ class DistrictUserProfile(models.Model):
 
 class DistrictAsset(models.Model):
     district = models.ForeignKey(District)
-    school = models.ForeignKey(School)
-    room = models.ForeignKey(SchoolRoom)
+    school = models.ForeignKey(School, null=True)
+    room = models.ForeignKey(SchoolRoom, null=True)
 
 class Computer(DistrictAsset):
-    os = models.CharField(max_length=30, choices=OS_CHOICES)
-    processor = models.CharField(max_length=30)
-    hd_size = models.CharField(max_length=10, choices=HD_SIZE_CHOICES)
-    ram = models.CharField(max_length=30, choices=RAM_SIZE_CHOICES)
-    monitor_size = models.CharField(max_length=30, choices=MONITOR_SIZE_CHOICES)
+    os = models.CharField(max_length=30, choices=OS_CHOICES, null=True)
+    processor = models.CharField(max_length=30, null=True)
+    hd_size = models.CharField(max_length=10, choices=HD_SIZE_CHOICES, null=True)
+    ram = models.CharField(max_length=30, choices=RAM_SIZE_CHOICES, null=True)
+    monitor_size = models.CharField(max_length=30, choices=MONITOR_SIZE_CHOICES, null=True)
     
     class Meta:
         ordering = ('school',)
