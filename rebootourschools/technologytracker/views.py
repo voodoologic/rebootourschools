@@ -83,21 +83,19 @@ def schoolDetail(request, school_id):
      try:
          school = School.objects.get(pk=school_id)
          computers = Computer.objects.filter(school=school).order_by('os', 'ram')
-         computerCount = Computer.objects.filter(school=school).count()
-         osxCount = Computer.objects.filter(school=school, os='OSX').count()
-         linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
-         windowsCount = Computer.objects.filter(school=school, os='WINDOWS').count()
+         computerCount = len(computers)         
          
-         ##os chart
-         osxCount = Computer.objects.filter(school=school, os='OSX').count()
-         linuxCount = Computer.objects.filter(school=school, os='LINUX').count()
-         windowsCount = Computer.objects.filter(school=school, os='WINDOWS').count()
-         
-         osDataset = [osxCount, linuxCount, windowsCount]
-         osChart = Pie3D( osDataset )
-         osChart.label('OS X','LINUX','WINDOWS')
-         osChart.color('4d89f9','c6d9fd')
-         osChart.title('Operating Systems')
+         osxCount = 0
+         linuxCount = 0
+         windowsCount = 0
+         for computer in computers:
+             if computer.os == 'OSX':
+                 osxCount += 1
+             elif computer.os == 'LINUX':
+                 linuxCount += 1
+             elif computer.os == 'WINDOWS':
+                 windowsCount +=1
+         osChart = ratios.generateOsPieChart(osxCount, linuxCount, windowsCount)
          
          ##hd chart
          smallHd = Computer.objects.filter(school=school, hd_size='60').count()
@@ -108,7 +106,7 @@ def schoolDetail(request, school_id):
          hdChart = Pie3D( hdDataset )
          hdChart.label('60 GB','128 GB','250GB')
          hdChart.color('4d89f9','c6d9fd')
-         hdChart.title('Memory (Hard Drives)')
+         hdChart.size(300,100)
          
          ##ram chart
          oneGb = Computer.objects.filter(school=school, ram='1').count()
@@ -120,7 +118,7 @@ def schoolDetail(request, school_id):
          ramChart = Pie3D( ramDataset )
          ramChart.label('1 GB','2 GB','4 GB', '8 GB')
          ramChart.color('4d89f9','c6d9fd')
-         ramChart.title('Memory (RAM)') 
+         ramChart.size(300,100)
  
          return render_to_response('schoolDetail.html',
                                    {'school':school,
