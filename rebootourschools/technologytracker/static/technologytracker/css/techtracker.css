@@ -37,6 +37,12 @@ div.button {
     margin-top: 30px;
 }
 
+#stats img.chart {
+      margin: 20px 0 20px 0;
+      display: block;
+      text-align: center;
+}
+
 #stats .stat h4 {
     border-bottom: 1px solid #F0F1F2;
     margin: 0 0 10px;

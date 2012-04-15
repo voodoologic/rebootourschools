@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from GChartWrapper import *
 from django.utils import simplejson
 from collections import defaultdict
+import ratioCalculator as ratios
 
 from technologytracker.models import *
 # Create your views here.
@@ -21,26 +22,33 @@ def home(request):
         districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
         userDistrict = District.objects.get(pk=districtUserProfile)
         
-        ###retrieve all of the schools in the user's district
+        ###retrieve all of the schools and computers in the user's district
         schools = School.objects.filter(district=userDistrict)
-        schoolCount = School.objects.filter(district=userDistrict).count()        
+        schoolCount = len(schools)        
         computers = Computer.objects.filter(district=userDistrict)
-        computerCount = Computer.objects.filter(district=userDistrict).count()        
+        computerCount = len(computers)       
         
+        ###compute counts for pill displays
         teacherCount = sum(school.teacher_count or 0 for school in schools)
-        elementarySchoolCount = School.objects.filter(district=userDistrict, school_type=1).count()
+        elementarySchoolCount = len([school for school in schools if school.school_type == 1])
+        middleSchoolCount = len([school for school in schools if school.school_type == 2])
+        highSchoolCount = len([school for school in schools if school.school_type == 3])
         
-        chart1 = Line('cEAELFJHUc',encoding='simple')
-        chart1.color('76A4FB')
-        chart1.line(2)
-        chart1.axes('x')
-        chart1.axes.range(0,10,50,5)
-                
-        chart2 = Line('cEAELFJHUc',encoding='simple')
-        chart2.color('76A4FB')
-        chart2.line(2)
-        chart2.axes('x')
-        chart2.axes.range(0,10,50,5)
+        schoolTypeChart = Pie3D([elementarySchoolCount,middleSchoolCount, highSchoolCount], encoding='text')
+        schoolTypeChart.size(500,150)
+        schoolTypeChart.color('4d89f9') 
+        schoolTypeChart.label('Elementary Schools', 'Middle Schools', 'High Schools')        
+        
+        #compute ratios for schools, computer, and teachers
+        studentsPerComputerRatioList, teachersPerComputerRatioList, computersPerSchoolCountList = ratios.computeDistrictRatios(schools, computers)
+        
+        studentsPerComputerDataset = [school[1] for school in studentsPerComputerRatioList]
+        studentsPerComputerLabels = [school[0].full_name for school in studentsPerComputerRatioList]
+        
+        studentsPerComputerChart = VerticalBarStack(studentsPerComputerDataset)
+        studentsPerComputerChart.color('0074CC')
+        studentsPerComputerChart.bar(50,15)
+        studentsPerComputerChart.marker('N*','black',0,-1,15)   
             
         
         return render_to_response('home.html',
@@ -50,8 +58,13 @@ def home(request):
                                   'computerCount': computerCount,
                                   'teacherCount': teacherCount,
                                   'elementarySchoolCount': elementarySchoolCount,
-                                  'chart1': chart1,
-                                  'chart2': chart2,
+                                  'middleSchoolCount': middleSchoolCount,
+                                  'highSchoolCount': highSchoolCount,
+                                  'studentsPerComputerRatioList': studentsPerComputerRatioList,
+                                  'teachersPerComputerRatioList': teachersPerComputerRatioList,
+                                  'computersPerSchoolCountList': computersPerSchoolCountList,
+                                  'studentsPerComputerChart': studentsPerComputerChart,
+                                  'schoolTypeChart': schoolTypeChart
                                   },
                                   context_instance=RequestContext(request))
     
@@ -362,6 +375,7 @@ def addComputer(request):
                                   processor=request.POST['computerProcessor'],
                                   hd_size=request.POST['hdSize'],
                                   ram=request.POST['ram'],)
+                print computer
                 computer.save()
 
         return HttpResponseRedirect('/school/' + request.POST['schoolPk'] + '/') # Redirect after POST

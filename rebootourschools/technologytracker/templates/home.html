@@ -44,34 +44,45 @@
 
 <div id="stats">
 	<div class="row">
-		<div class="span4 stat">
-			<h4 class="statTitle">Elementary Schools</h4>
-			<p class="statValue">{{ elementarySchoolCount }}</p>
+		<div class="span4 stat c">
+			<h4 class="statTitle">Worst Students-per-Computer Ratios</h4>
+			<img src="{{ studentsPerComputerChart }}" class="chart">
 		</div>
-		<div class="span4 stat">
-			<h4 class="statTitle">Middle Schools</h4>
-			<p class="statValue">{{ schoolCount }}</p>
-		</div>
-		<div class="span4 stat">
-			<h4 class="statTitle">High Schools</h4>
-			<p class="statValue">{{ schoolCount }}</p>
+		<div class="span8 stat">
+			<h4 class="statTitle">School Types</h4>
+			<img src="{{ schoolTypeChart }}" class="chart">
 		</div>
 	</div>
 </div>
 
 <div id="stats">
 	<div class="row">
-		<div class="span6 stat">
-			<h4 class="statTitle">Sample Chart 1</h4>
-			<img src="{{ chart1 }}" class="center">
+		<div class="span4 stat">
+			<h4 class="statTitle">Worst Students-per-Computer Ratios</h4>
+			<ul>
+			{% for ratio in studentsPerComputerRatioList %}
+				<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
+			{% endfor %}
+			</ul>
 		</div>
-		<div class="span6 stat">
-			<h4 class="statTitle">Sample Chart 2</h4>
-			<img src="{{ chart2 }}" class="center">
+		<div class="span4 stat">
+			<h4 class="statTitle">Least Number of Computers</h4>
+			<ul>
+			{% for ratio in computersPerSchoolCountList %}
+				<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+		<div class="span4 stat">
+			<h4 class="statTitle">Worst Teacher-per-Computer Ratios</h4>
+			<ul>
+			{% for ratio in teachersPerComputerRatioList %}
+				<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
+			{% endfor %}
+			</ul>
 		</div>
 	</div>
-</div>	
-
+</div>
 
 
 <!-- <h2>{{ userDistrict.district_code }} Schools:</h2>
