@@ -12,11 +12,11 @@ def computeDistrictRatios(schools, computers):
             computersPerSchoolCountList.append((school, computerCount))
             
             ###students per computer ratio
-            studentPerComputerRatio = float(school.student_count) / float(computerCount)
+            studentPerComputerRatio = float(school.student_count or 0) / float(computerCount)
             studentsPerComputerRatioList.append((school, studentPerComputerRatio))
             
             ###teachers per computer ratio
-            teachersPerComputerRatio = float(school.teacher_count) / float(computerCount)
+            teachersPerComputerRatio = float(school.teacher_count or 0) / float(computerCount)
             teachersPerComputerRatioList.append((school, teachersPerComputerRatio))
             
     ###sort all of the lists before returning them

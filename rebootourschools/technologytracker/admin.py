@@ -1,4 +1,4 @@
-from technologytracker.models import School, Computer, Tablet, District, DistrictUserProfile
+from technologytracker.models import School, Computer, District, DistrictUserProfile
 from django.contrib import admin
 
 class SchoolsInline(admin.TabularInline):
@@ -9,10 +9,6 @@ class ComputersInline(admin.TabularInline):
     model = Computer
     extra = 1
     
-class TabletsInline(admin.TabularInline):
-    model = Tablet
-    extra = 1    
-            
 class SchoolAdmin(admin.ModelAdmin):
     fieldsets = [
         ('School info', {'fields' : ['full_name', 'school_code', 'district']})      

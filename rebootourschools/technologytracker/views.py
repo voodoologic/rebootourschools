@@ -41,14 +41,16 @@ def home(request):
         
         #compute ratios for schools, computer, and teachers
         studentsPerComputerRatioList, teachersPerComputerRatioList, computersPerSchoolCountList = ratios.computeDistrictRatios(schools, computers)
-        
+
         studentsPerComputerDataset = [school[1] for school in studentsPerComputerRatioList]
         studentsPerComputerLabels = [school[0].full_name for school in studentsPerComputerRatioList]
+
         
-        studentsPerComputerChart = VerticalBarStack(studentsPerComputerDataset)
-        studentsPerComputerChart.color('0074CC')
-        studentsPerComputerChart.bar(50,15)
-        studentsPerComputerChart.marker('N*','black',0,-1,15)   
+        studentsPerComputerChart = VerticalBarStack(studentsPerComputerDataset) if studentsPerComputerDataset else ''
+        if studentsPerComputerDataset:
+          studentsPerComputerChart.color('0074CC')
+          studentsPerComputerChart.bar(50,15)
+          studentsPerComputerChart.marker('N*','black',0,-1,15)   
             
         
         return render_to_response('home.html',
@@ -73,8 +75,6 @@ def home(request):
         return HttpResponseNotFound('District profile not found')
     except District.DoesNotExist:
         return HttpResponseNotFound('District not found')
-    except School.DoesNotExist:        
-        return HttpResponseNotFound('School not found')     
 
 
 @login_required(login_url='/login/')    
@@ -95,7 +95,7 @@ def schoolDetail(request, school_id):
                  linuxCount += 1
              elif computer.os == 'WINDOWS':
                  windowsCount +=1
-         osChart = ratios.generateOsPieChart(osxCount, linuxCount, windowsCount)
+         osChart = ratios.generateOsPieChart(osxCount, linuxCount, windowsCount) if computers else ''
          
          ##hd chart
          smallHd = Computer.objects.filter(school=school, hd_size='60').count()
@@ -200,13 +200,13 @@ def districtReporting(request):
     
     schoolDataset = []
     schoolLabels = []
+    computerCountChart = ''
     for school in schools:
         schoolLabels.append(school.full_name)
         computerCount = Computer.objects.filter(school=school).count()
         schoolDataset.append(computerCount)
 
         computerCountChart = VerticalBarStack(schoolDataset)
-        #computerCountChart.label(schoolLabels)
         computerCountChart.color('4d89f9','c6d9fd')
         computerCountChart.title('Count by school')
         computerCountChart.size(600,375)
@@ -241,17 +241,6 @@ def districtReporting(request):
         'verticalBarStack': verticalBarStack,
     })
     
-@login_required(login_url='/login/')
-def districts(request):
-    districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
-    userDistrict = District.objects.get(pk=districtUserProfile)
-    districtAssets = userDistrict.districtasset_set
-    
-    ##get a list of all the districts
-    districts = District.objects.all()
-    
-    return render_to_response('districts.html', {'userDistrict': userDistrict, 'districtAssets': districtAssets, 'districts': districts})     
-
 
 @login_required(login_url='/login/')
 def schools(request):
@@ -259,7 +248,7 @@ def schools(request):
     userDistrict = District.objects.get(pk=districtUserProfile)
     districtAssets = userDistrict.districtasset_set
 
-    ##get a list of all the districts
+    ##get a list of all the schools
     schools = School.objects.all()
 
     schoolTypes = School.SCHOOL_TYPE_CHOICES

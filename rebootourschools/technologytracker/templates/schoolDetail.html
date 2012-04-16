@@ -7,7 +7,7 @@
 <div class="tabbable">
 
   <ul class="nav nav-tabs">
-    <li>
+    <li class="active">
       <a href="#reporting" data-toggle="tab">Reporting</a>
     </li>    
 	<li>
@@ -19,6 +19,82 @@
   </ul>
 
   <div class="tab-content">
+
+    <div class="tab-pane active" id="reporting">
+		<div id="stats">
+			<div class="row">
+				<div class="span4 stat">
+					<h4 class="statTitle">Number of Computers</h4>
+					<p class="statValue">{{ computerCount }}</p>
+				</div>
+				<div class="span4 stat">
+					<h4 class="statTitle">Number of Teachers</h4>
+					<p class="statValue">{{ school.teacher_count }}</p>
+				</div>
+				<div class="span4 stat">
+					<h4 class="statTitle">Number of Students</h4>
+					<p class="statValue">{{ school.student_count }}</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="stats">
+			<div class="row">
+				<div class="span4 stat">
+					<h4 class="statTitle">Operating Systems</h4>
+					<img src="{{ osChart }}">
+				</div>
+				<div class="span4 stat">
+					<h4 class="statTitle">Memory (Hard Drives)</h4>
+					<img src="{{ hdChart}}">
+				</div>
+				<div class="span4 stat">
+					<h4 class="statTitle">Memory (RAM)</h4>
+					<img src="{{ ramChart }}">
+				</div>
+			</div>
+		</div>
+
+		<div id="stats">
+			<div class="row">
+				<div class="span4 stat c">
+					<h4 class="statTitle">Worst Students-per-Computer Ratios</h4>
+				</div>
+				<div class="span8 stat">
+					<h4 class="statTitle">School Types</h4>
+				</div>
+			</div>
+		</div>
+
+		<div id="stats">
+			<div class="row">
+				<div class="span4 stat">
+					<h4 class="statTitle">Worst Students-per-Computer Ratios</h4>
+					<ul>
+					{% for ratio in studentsPerComputerRatioList %}
+						<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
+					{% endfor %}
+					</ul>
+				</div>
+				<div class="span4 stat">
+					<h4 class="statTitle">Least Number of Computers</h4>
+					<ul>
+					{% for ratio in computersPerSchoolCountList %}
+						<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
+					{% endfor %}
+					</ul>
+				</div>
+				<div class="span4 stat">
+					<h4 class="statTitle">Worst Teacher-per-Computer Ratios</h4>
+					<ul>
+					{% for ratio in teachersPerComputerRatioList %}
+						<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
+					{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+    </div>
 
     <div class="tab-pane" id="rooms">
 
@@ -97,82 +173,6 @@
       <br/>
 
       <a name="addComputer" id="addComputer" class="btn-primary btn-large" href="/addComputer/">Add Computers</a>
-    </div>
-
-    <div class="tab-pane active" id="reporting">
-		<div id="stats">
-			<div class="row">
-				<div class="span4 stat">
-					<h4 class="statTitle">Number of Computers</h4>
-					<p class="statValue">{{ computerCount }}</p>
-				</div>
-				<div class="span4 stat">
-					<h4 class="statTitle">Number of Teachers</h4>
-					<p class="statValue">{{ school.teacher_count }}</p>
-				</div>
-				<div class="span4 stat">
-					<h4 class="statTitle">Number of Students</h4>
-					<p class="statValue">{{ school.student_count }}</p>
-				</div>
-			</div>
-		</div>
-		
-		<div id="stats">
-			<div class="row">
-				<div class="span4 stat">
-					<h4 class="statTitle">Operating Systems</h4>
-					<img src="{{ osChart }}">
-				</div>
-				<div class="span4 stat">
-					<h4 class="statTitle">Memory (Hard Drives)</h4>
-					<img src="{{ hdChart}}">
-				</div>
-				<div class="span4 stat">
-					<h4 class="statTitle">Memory (RAM)</h4>
-					<img src="{{ ramChart }}">
-				</div>
-			</div>
-		</div>
-
-		<div id="stats">
-			<div class="row">
-				<div class="span4 stat c">
-					<h4 class="statTitle">Worst Students-per-Computer Ratios</h4>
-				</div>
-				<div class="span8 stat">
-					<h4 class="statTitle">School Types</h4>
-				</div>
-			</div>
-		</div>
-
-		<div id="stats">
-			<div class="row">
-				<div class="span4 stat">
-					<h4 class="statTitle">Worst Students-per-Computer Ratios</h4>
-					<ul>
-					{% for ratio in studentsPerComputerRatioList %}
-						<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
-					{% endfor %}
-					</ul>
-				</div>
-				<div class="span4 stat">
-					<h4 class="statTitle">Least Number of Computers</h4>
-					<ul>
-					{% for ratio in computersPerSchoolCountList %}
-						<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
-					{% endfor %}
-					</ul>
-				</div>
-				<div class="span4 stat">
-					<h4 class="statTitle">Worst Teacher-per-Computer Ratios</h4>
-					<ul>
-					{% for ratio in teachersPerComputerRatioList %}
-						<li><a href="/school/{{ ratio.0.id }} ">{{ ratio.0.full_name }}</a>:  {{ ratio.1 }}</li>
-					{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div>
     </div>
 
   </div>

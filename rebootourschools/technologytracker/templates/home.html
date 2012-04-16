@@ -6,23 +6,22 @@
 
 
 {% block content %}
-<h1>{{ userDistrict.full_name }}</h1>
-<h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3>
 
-<div id="actions">
-	<div class="row">
-		<div class="span6 button">
-			<a id="addSchool" class="btn-primary btn-large" data-toggle="modal" data-target="#addSchoolModal" href="/addSchool/">Add a School</a>
-		</div>
-		<div class="span6 select">
-			<p>Navigate to a school:</p>
-			<select name="school">
-			    {% for school in schools %}
-					<option value="{{school.id}}" selected="selected">{{school.full_name}}</option>
-			    {% endfor %}
-			</select>
-		</div>
-	</div>		
+<div>
+  <div class="row">
+    <div class="span6">
+      <h1>{{ userDistrict.full_name }}</h1>
+      <h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3>
+    </div>
+    <div class="span6">
+      <p>Navigate to a school:</p>
+      <select name="schoolSelect" id="schoolSelect">
+      {% for school in schools %}
+        <option value="{{school.id}}" selected="selected">{{school.full_name}}</option>
+      {% endfor %}
+      </select>
+    </div>
+  </div>		
 </div>
 
 <div id="stats">
@@ -84,57 +83,5 @@
 	</div>
 </div>
 
-
-<!-- <h2>{{ userDistrict.district_code }} Schools:</h2>
-
-<ul>
-  {% for school in schools %}
-  <li>
-    <a href="/school/{{ school.id }} ">{{ school.full_name }} ( {{ school.school_code }} )</a>
-  </li>
-  {% endfor %}
-</ul> -->
-
-
-
-<div class="modal hide" id="addSchoolModal">
-  <div class="modal-header">
-    <a href="#" class="close" id="closeModal" data-dismiss="modal">&times;</a>
-    <h2>Add a new School:</h2>
-  </div>
-  <div class="modal-body">
-    <form action="/addSchool/" id="addSchoolForm" method="post">
-      {% csrf_token %}
-      <label for="schoolName">Full Name:</label><br/>
-      <input type="text" name="schoolName" id="schoolName" /><br/>
-      <br/>
-      <label for="schoolCode">School Code:</label><br/>
-      <input type="text" name="schoolCode" id="schoolCode" /><br/>
-      <br/>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <input type="button" class="btn" id="closeButton" value="Cancel" />
-    <input type="button" class="btn btn-primary" id="addButton" value="Add" />
-  </div>
-</div>
-
-
-<script type="text/javascript">
-  $(document).ready( function(){
-	
-    $("#closeButton").click(function() {
-      $('#addSchoolModal').modal('hide');
-    });
-
-    $("#addButton").click( function() {
-      $("#addSchoolForm").submit();
-    });
-
-  });
-</script>
-
 {% endblock %}
-
-
 

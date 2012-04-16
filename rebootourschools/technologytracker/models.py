@@ -151,38 +151,4 @@ class Computer(DistrictAsset):
     def __unicode__(self):
         return u"%s %s %s %s" % (self.os, self.processor, self.ram, self.hd_size)
 
-    
-class LicensedSoftware(DistrictAsset):
-    product_name = models.CharField(max_length=30)
-    software_type = models.CharField(max_length=30)
-    publisher = models.CharField(max_length=30)
-    
-    def __unicode__(self):
-        return u"%s %s" % (self.product_name, self.publisher)
 
-
-class Printer(DistrictAsset):
-    model = models.CharField(max_length=30)
-    manufacturer = models.CharField(max_length=30)
-    kind = models.CharField(max_length=30)
-    
-    def __unicode__(self):
-        return u"%s %s" % (self.manufacturer, self.model)      
-
-
-class Tablet(DistrictAsset):
-    model = models.CharField(max_length=30)
-    manufacturer = models.CharField(max_length=30)
-    kind = models.CharField(max_length=30)
-    
-    def __unicode__(self):
-        return u"%s %s" % (self.manufacturer, self.model)
-
-    
-class MobileDevice(DistrictAsset):
-    model = models.CharField(max_length=30)
-    manufacturer = models.CharField(max_length=30)
-    kind = models.CharField(max_length=30)
-    
-    def __unicode__(self):
-        return u"%s %s" % (self.manufacturer, self.model)
