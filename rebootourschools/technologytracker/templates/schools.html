@@ -57,6 +57,14 @@
         {% endfor %}
         </select>
       </p>
+      <p>
+        <label for="schoolStudents">School Students:</label>
+        <input type="text" name="schoolStudents" id="schoolStudents" />
+      </p>
+      <p>
+        <label for="schoolTeachers">School Teachers:</label>
+        <input type="text" name="schoolTeachers" id="schoolTeachers" />
+      </p>
       <input type="hidden" name="schoolPk" id="schoolPk" value="" />
     </form>
   </div>
@@ -83,6 +91,8 @@
       $('#schoolCode').val('');
       $('#schoolName').val('');
       $('#schoolPk').val('');
+      $('#schoolStudents').val('');
+      $('#schoolTeachers').val('');
       $('#addSchoolModal').modal('show');
     });
 
@@ -93,6 +103,8 @@
       }).done( function(data) {
         $('#schoolCode').val(data.school_code);
         $('#schoolName').val(data.school_name);
+        $('#schoolStudents').val(data.school_students);
+        $('#schoolTeachers').val(data.school_teachers);
         $('#schoolPk').val(data.school_pk);
         $('#addSchoolModal').modal('show');
       });

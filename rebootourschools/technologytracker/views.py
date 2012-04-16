@@ -153,6 +153,8 @@ def schooljson(request, school_pk):
         data = { 'school_name': school.full_name,
                  'school_code': school.school_code,
                  'school_type': school.school_type,
+                 'school_students': school.student_count,
+                 'school_teachers': school.teacher_count,
                  'school_pk': school.pk, }
 
         return HttpResponse(simplejson.dumps(data), content_type='application/json')
@@ -299,6 +301,8 @@ def addSchool(request):
                 school.full_name = request.POST['schoolName']
                 school.school_code = request.POST['schoolCode']
                 school.school_type = request.POST['schoolType']
+                school.student_count = request.POST['schoolStudents']
+                school.teacher_count = request.POST['schoolTeachers']
                 school.save()
             except School.DoesNotExist:
 
@@ -306,7 +310,9 @@ def addSchool(request):
         else:
             school=School(district=userDistrict,
                           full_name=request.POST['schoolName'],
-                          school_code=request.POST['schoolCode'], )
+                          school_code=request.POST['schoolCode'],
+                          student_count = request.POST['schoolStudents'],
+                          teacher_count = request.POST['schoolTeachers'],)
             school.school_type = request.POST['schoolType']
             school.save()
 
