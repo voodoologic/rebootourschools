@@ -14,7 +14,10 @@
       <h3>{{ userDistrict.city }}, {{ userDistrict.state }}</h3>
     </div>
     <div class="span6">
-      <p>Navigate to a school:</p>
+      <p>
+        Navigate to a school:&nbsp;&nbsp;&nbsp;
+        <a name="schoolNavigator" id="schoolNavigator" class="btn btn-info btn-mini" href="/schools/">Go</a>
+      </p>
       <select name="schoolSelect" id="schoolSelect">
       {% for school in schools %}
         <option value="{{school.id}}" selected="selected">{{school.full_name}}</option>
@@ -82,6 +85,19 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+  $(document).ready( function(){
+
+    $('#schoolNavigator').click( function(e) {
+      e.preventDefault();
+      window.location='/school/' + $('#schoolSelect').val()  + '/';
+    });
+
+  });
+
+</script>
 
 {% endblock %}
 

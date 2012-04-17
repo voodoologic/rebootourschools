@@ -81,7 +81,11 @@ def home(request):
 def schoolDetail(request, school_id):
      
      try:
-         school = School.objects.get(pk=school_id)
+         ###retrieve the district that the current user is assigned to
+         districtUserProfile = DistrictUserProfile.objects.filter(user=request.user)
+         userDistrict = District.objects.get(pk=districtUserProfile)
+
+         school = School.objects.get(pk=school_id, district=userDistrict)
          computers = Computer.objects.filter(school=school).order_by('os', 'ram')
          computerCount = len(computers)         
          
